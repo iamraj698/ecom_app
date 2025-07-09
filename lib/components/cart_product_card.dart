@@ -1,0 +1,123 @@
+import 'package:ecom_app/components/my_text.dart';
+import 'package:ecom_app/utils/custom_styles.dart';
+import 'package:ecom_app/utils/size_config.dart';
+import 'package:flutter/material.dart';
+
+class CartProductCard extends StatelessWidget {
+  const CartProductCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return // cart row
+        Card(
+      color: CustomStyles.textWhite,
+
+      // shape: RoundedRectangleBorder(),
+      child: Padding(
+        padding: EdgeInsets.all(width(15)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: height(96),
+              width: width(77),
+              decoration: BoxDecoration(
+                  color: CustomStyles.cartImagBack,
+                  borderRadius: BorderRadius.circular(width(15))),
+              child: Image.asset(
+                "./assets/images/prod_details/banner_image.png",
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: width(145),
+                  child: Text(
+                    "Men's Tie-Dye T-Shirt Nike Sportswear",
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontFamily: "Inter",
+                        fontSize: height(13),
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                SizedBox(
+                  height: height(10),
+                ),
+                MyText(
+                  title: "\$45 (-\$4.00 Tax)",
+                  fontSize: 11,
+                  color: CustomStyles.lightGreyText,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomStyles.textWhite,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(width(5)), // reduce size
+                          minimumSize:
+                              Size(width(36), width(36)), // compact size
+                          // elevation: 0, // optional: remove shadow
+                        ),
+                        child: Icon(
+                          Icons.keyboard_arrow_up_outlined,
+                          color: CustomStyles.lightGreyText,
+                        )),
+                    SizedBox(
+                      width: width(5),
+                    ),
+                    MyText(
+                      title: "1",
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    SizedBox(
+                      width: width(5),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomStyles.textWhite,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(width(5)), // reduce size
+                          minimumSize:
+                              Size(width(36), width(36)), // compact size
+                        ),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: CustomStyles.lightGreyText,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+            Container(
+              height: height(96),
+              // color: Colors.red,
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: EdgeInsets.all(width(4)),
+                decoration: BoxDecoration(
+                    // color: CustomStyles.cartImagBack,
+                    border: Border.all(
+                      color: CustomStyles.cartImagBack,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      width(50),
+                    )),
+                child: Icon(
+                  Icons.delete_outline,
+                  color: CustomStyles.lightGreyText,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
