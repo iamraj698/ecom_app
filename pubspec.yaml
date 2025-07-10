@@ -66,6 +66,7 @@ flutter:
     - assets/images/brands/
     - assets/images/products/
     - assets/images/prod_details/
+    - assets/images/card_address/
 
   #   - images/a_dot_ham.jpeg
 

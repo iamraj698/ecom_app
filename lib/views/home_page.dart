@@ -99,7 +99,9 @@ class _HomePageState extends State<HomePage> {
                         width: width(45),
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        navigatorKey.currentState?.pushNamed(RouteNames.cart);
+                      },
                       icon: Image.asset(
                         "./assets/images/appbar_assets/Cart.png",
                         height: height(45),
