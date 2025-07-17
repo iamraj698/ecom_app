@@ -10,8 +10,6 @@ class CustomStyles {
   static const Color cartImagBack = Color(0xffF5F6FA);
   static const Color cartBtnText = Color(0xffDEDEDE);
   static const Color checkBack = Color(0xff4AC76D);
-
-
-
-  
+  static const Color lightGreen = Color(0xff34C358);
+  static const Color danger = Color(0xffEA4335);
 }

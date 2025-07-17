@@ -5,4 +5,5 @@ class RouteNames {
   static const productDetails = "productDetails";
   static const splash = "splash";
   static const cart = "cart";
+  static const login = "login";
 }
