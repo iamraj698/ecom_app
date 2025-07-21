@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 
 class LoginTextfield extends StatelessWidget {
   const LoginTextfield(
-      {super.key,
-      required this.title,
-      required this.hintText,
-      required this.widget});
-  final String hintText;
+      {super.key, required this.title, this.hintText, required this.widget});
+  final String? hintText;
   final String title;
   final Widget widget;
 

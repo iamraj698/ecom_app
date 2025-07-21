@@ -7,14 +7,14 @@ import 'package:ecom_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:ecom_app/routes/routesName.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool isRememberMe = true;
   @override
   Widget build(BuildContext context) {
@@ -25,21 +25,21 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           // main parent column
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
                     const MyText(
-                      title: "Welcome",
+                      title: "SignUp",
                       fontSize: 28,
                       fontWeight: FontWeight.w600,
                     ),
-                    MyText(
-                      title: "Please enter your data to continue",
-                      fontSize: 15,
-                      color: CustomStyles.lightGreyText,
-                    ),
+                    // MyText(
+                    //   title: "Please enter your data to continue",
+                    //   fontSize: 15,
+                    //   color: CustomStyles.lightGreyText,
+                    // ),
                   ],
                 )
               ],
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   // user name
                   const LoginTextfield(
-                    hintText: "Esther Howard",
+                    // hintText: "Esther Howard",
                     title: "Username",
                     widget: Icon(
                       Icons.check,
@@ -62,11 +62,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   const LoginTextfield(
-                    hintText: "HJ@#9783kja",
+                    // hintText: "HJ@#9783kja",
                     title: "Password",
                     widget: MyText(
                       title: "Strong",
                       fontSize: 13,
+                      color: CustomStyles.lightGreen,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: height(10),
+                  ),
+
+                  LoginTextfield(
+                    title: "Email Address",
+                    widget: Icon(
+                      Icons.check,
                       color: CustomStyles.lightGreen,
                     ),
                   ),
@@ -121,68 +133,68 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
 
-            //  terms And conditions
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+            // Sign Up Button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Sign Up Button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyText(
-                      title: "Didn't have an account ",
-                      fontSize: 13,
-                      color: CustomStyles.lightGreyText,
-                    ),
-                    SizedBox(
-                      width: width(2),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        print("go to sign up page");
-                        navigatorKey.currentState?.pushReplacementNamed(RouteNames.signUp);
-                      },
-                      child: MyText(
-                        title: "Sign Up",
-                        fontSize: 13,
-                        color: CustomStyles.textBlack,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+                MyText(
+                  title: "Already have an account ",
+                  fontSize: 13,
+                  color: CustomStyles.lightGreyText,
                 ),
-
                 SizedBox(
-                  height: height(10),
+                  width: width(2),
                 ),
-
-                RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                        text:
-                            "By connecting your account confirm that you agree with our ",
-                        style: TextStyle(
-                            color: CustomStyles.lightGreyText,
-                            fontSize: height(13)),
-                        children: [
-                          TextSpan(
-                            text: "Term and Condition",
-                            style: TextStyle(
-                                color: CustomStyles.textBlack,
-                                fontWeight: FontWeight.w600,
-                                fontSize: height(13)),
-                          )
-                        ]))
+                InkWell(
+                  onTap: () {
+                    navigatorKey.currentState
+                        ?.pushReplacementNamed(RouteNames.login);
+                  },
+                  child: MyText(
+                    title: "Login",
+                    fontSize: 13,
+                    color: CustomStyles.textBlack,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
               ],
             ),
+
+            SizedBox(
+              height: height(10),
+            ),
+
+            //  terms And conditions
+
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     RichText(
+            //         textAlign: TextAlign.center,
+            //         text: TextSpan(
+            //             text:
+            //                 "By connecting your account confirm that you agree with our ",
+            //             style: TextStyle(
+            //                 color: CustomStyles.lightGreyText,
+            //                 fontSize: height(13)),
+            //             children: [
+            //               TextSpan(
+            //                 text: "Term and Condition",
+            //                 style: TextStyle(
+            //                     color: CustomStyles.textBlack,
+            //                     fontWeight: FontWeight.w600,
+            //                     fontSize: height(13)),
+            //               )
+            //             ])),
+            //   ],
+            // ),
           ],
         ),
       ),
       bottomNavigationBar: Submit(
-        submitText: "Login",
+        submitText: "SignUp",
         onTap: () {
-          navigatorKey.currentState?.pushReplacementNamed(RouteNames.homepage);
+          navigatorKey.currentState?.pushReplacementNamed(RouteNames.login);
         },
       ),
     );

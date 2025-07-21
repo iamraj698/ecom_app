@@ -1,6 +1,7 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
+import 'package:ecom_app/views/auth_pages/signup/signup_page.dart';
 import 'package:ecom_app/views/cart/cart.dart';
 import 'package:ecom_app/views/home_page.dart';
 import 'package:ecom_app/views/newpage.dart';
@@ -34,6 +35,11 @@ class RouteGenerator {
       case RouteNames.login:
         return MaterialPageRoute(
           builder: (context) => const LoginPage(),
+        );
+
+      case RouteNames.signUp:
+        return MaterialPageRoute(
+          builder: (context) => const SignUpPage(),
         );
 
       case RouteNames.newpage:

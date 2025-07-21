@@ -6,4 +6,5 @@ class RouteNames {
   static const splash = "splash";
   static const cart = "cart";
   static const login = "login";
+  static const signUp = "signUp";
 }
