@@ -1,6 +1,7 @@
 import 'package:ecom_app/components/custom_list_tile.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/main.dart';
+import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -158,10 +159,16 @@ class _MyDrawerState extends State<MyDrawer> {
               height: height(100),
             ),
 
-            CustomListTile(
-              icon: Icons.logout,
-              title: "Logout",
-              color: Colors.red,
+            InkWell(
+              onTap: () {
+                navigatorKey.currentState
+                    ?.pushReplacementNamed(RouteNames.login);
+              },
+              child: CustomListTile(
+                icon: Icons.logout,
+                title: "Logout",
+                color: Colors.red,
+              ),
             ),
           ],
         ),
