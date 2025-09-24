@@ -1,6 +1,8 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
+import 'package:ecom_app/views/auth_pages/login_otp/login_otp.dart';
+import 'package:ecom_app/views/auth_pages/login_phone/login_phone.dart';
 import 'package:ecom_app/views/auth_pages/signup/signup_page.dart';
 import 'package:ecom_app/views/cart/cart.dart';
 import 'package:ecom_app/views/home_page.dart';
@@ -22,6 +24,16 @@ class RouteGenerator {
           builder: (context) => const SplashScreen(),
         );
 
+      case RouteNames.loginPhone:
+        return MaterialPageRoute(
+          builder: (context) => const LoginPhone(),
+        );
+
+      case RouteNames.loginOtp:
+        return MaterialPageRoute(
+          builder: (context) => const LoginOtp(),
+        );
+        
       case RouteNames.productDetails:
         return MaterialPageRoute(
           builder: (context) => const ProductDetailsPage(),

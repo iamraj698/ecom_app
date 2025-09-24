@@ -7,4 +7,6 @@ class RouteNames {
   static const cart = "cart";
   static const login = "login";
   static const signUp = "signUp";
+  static const loginPhone = "loginPhone";
+   static const loginOtp = "loginOtp";
 }
