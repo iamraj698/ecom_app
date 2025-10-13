@@ -162,7 +162,7 @@ class _MyDrawerState extends State<MyDrawer> {
             InkWell(
               onTap: () {
                 navigatorKey.currentState
-                    ?.pushReplacementNamed(RouteNames.loginPhone);
+                    ?.pushReplacementNamed(RouteNames.login);
               },
               child: CustomListTile(
                 icon: Icons.logout,
