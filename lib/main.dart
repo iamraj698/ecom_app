@@ -1,6 +1,7 @@
 import 'package:ecom_app/routes/routes.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:ecom_app/view-models/demo_bloc/demo_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => DemoBloc()),
+          BlocProvider(create: (context) => AuthBloc()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

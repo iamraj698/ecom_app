@@ -49,8 +49,9 @@ class _LoginOtpState extends State<LoginOtp> {
               Submit(
                   submitText: "Submit",
                   onTap: () {
-                    navigatorKey.currentState?.pushReplacementNamed(RouteNames.homepage);
-                  })
+                    navigatorKey.currentState
+                        ?.pushReplacementNamed(RouteNames.homepage);
+                  }) 
             ],
           ),
         ),

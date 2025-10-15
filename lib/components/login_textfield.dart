@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 
 class LoginTextfield extends StatelessWidget {
   const LoginTextfield(
-      {super.key, required this.title, this.hintText, required this.widget});
+      {super.key,
+      required this.title,
+      this.hintText,
+      required this.widget,
+      this.controller,
+      this.obscuredText = false});
   final String? hintText;
   final String title;
   final Widget widget;
-  
+  final TextEditingController? controller;
+  final bool obscuredText;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +45,8 @@ class LoginTextfield extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  obscureText: obscuredText,
+                  controller: controller,
                   style: TextStyle(
                       fontWeight: FontWeight.w500, fontSize: height(15)),
                   decoration: InputDecoration(

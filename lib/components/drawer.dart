@@ -3,7 +3,9 @@ import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyDrawer extends StatefulWidget {
   final void Function(int)? onItemTapped;
@@ -161,8 +163,9 @@ class _MyDrawerState extends State<MyDrawer> {
 
             InkWell(
               onTap: () {
-                navigatorKey.currentState
-                    ?.pushReplacementNamed(RouteNames.login);
+                // navigatorKey.currentState
+                //     ?.pushReplacementNamed(RouteNames.login);
+                context.read<AuthBloc>().add(SignOutEvent());
               },
               child: CustomListTile(
                 icon: Icons.logout,
