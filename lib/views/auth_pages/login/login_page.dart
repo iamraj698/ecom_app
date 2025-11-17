@@ -1,3 +1,5 @@
+import 'package:ecom_app/components/alert_widget.dart';
+import 'package:ecom_app/components/loding_widget.dart';
 import 'package:ecom_app/components/login_textfield.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/submit.dart';
@@ -20,23 +22,29 @@ class _LoginPageState extends State<LoginPage> {
   bool isRememberMe = true;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool obscuredText = true;
+  bool obscuredIcon = true;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthenticationErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.error),
-            backgroundColor: Colors.red,
-            action: SnackBarAction(
-                label: "OK",
-                textColor: Colors.white,
-                onPressed: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  print("pressed Ok");
-                }),
-          ));
+          navigatorKey.currentState?.pop();
+          alertWidget(context, state.error);
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //   content: Text(state.error),
+          //   backgroundColor: Colors.red,
+          //   action: SnackBarAction(
+          //       label: "OK",
+          //       textColor: Colors.white,
+          //       onPressed: () {
+          //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          //         print("pressed Ok");
+          //       }),
+          // ));
+        } else if (state is AuthLoadingState) {
+          loadingWidget(context);
         }
       },
       child: Scaffold(
@@ -75,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "Enter Your Email",
                       title: "Username",
                       widget: const Icon(
-                        Icons.check,
+                        Icons.mail,
                         color: CustomStyles.lightGreen,
                       ),
                     ),
@@ -85,13 +93,22 @@ class _LoginPageState extends State<LoginPage> {
 
                     LoginTextfield(
                       controller: passwordController,
-                      obscuredText: true,
+                      obscuredText: obscuredText,
                       hintText: "Enter Your Password",
                       title: "Password",
-                      widget: const MyText(
-                        title: "Strong",
-                        fontSize: 13,
-                        color: CustomStyles.lightGreen,
+                      widget: InkWell(
+                        onTap: () {
+                          setState(() {
+                            obscuredText = !obscuredText;
+                            obscuredIcon = !obscuredIcon;
+                          });
+                        },
+                        child: Icon(
+                          obscuredIcon == true
+                              ? Icons.remove_red_eye
+                              : Icons.remove_red_eye_outlined,
+                          color: CustomStyles.lightGreen,
+                        ),
                       ),
                     ),
 

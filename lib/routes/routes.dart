@@ -8,6 +8,7 @@ import 'package:ecom_app/views/cart/cart.dart';
 import 'package:ecom_app/views/home_page.dart';
 import 'package:ecom_app/views/newpage.dart';
 import 'package:ecom_app/views/product_details_page/product_details_page.dart';
+import 'package:ecom_app/views/sell_products/sell_products.dart';
 import 'package:ecom_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => const LoginOtp(),
         );
-        
+
       case RouteNames.productDetails:
         return MaterialPageRoute(
           builder: (context) => const ProductDetailsPage(),
@@ -52,6 +53,11 @@ class RouteGenerator {
       case RouteNames.signUp:
         return MaterialPageRoute(
           builder: (context) => const SignUpPage(),
+        );
+
+      case RouteNames.sellProducts:
+        return MaterialPageRoute(
+          builder: (context) => const SellProducts(),
         );
 
       case RouteNames.newpage:
