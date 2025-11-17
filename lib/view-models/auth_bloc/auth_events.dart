@@ -1,8 +1,9 @@
 import "package:equatable/equatable.dart";
+import "package:firebase_auth/firebase_auth.dart";
 
 abstract class AuthEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AppStarted extends AuthEvent {
@@ -30,3 +31,12 @@ class SignOutEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+
+class AuthUserChanged extends AuthEvent {
+  AuthUserChanged(this.user);
+  User? user;
+  @override
+  List<Object?> get props => [user];
+}
+

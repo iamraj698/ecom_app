@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ecom_app/data/repositories/auth_repository.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
@@ -8,16 +10,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthRepository authRepository = AuthRepository();
   FirebaseAuth _auth = FirebaseAuth.instance;
+  late final StreamSubscription<User?> _authSubscription;
+
   AuthBloc() : super(AuthInitialState()) {
     on<AppStarted>(appStarted);
+    on<AuthUserChanged>(_onAuthUserChanged);
     on<SignUpEvent>(signUp);
     on<SignInEvent>(signIn);
     on<SignOutEvent>(signOut);
   }
   void appStarted(AppStarted event, Emitter<AuthState> emit) {
-    if (_auth.currentUser != null) {
+    _authSubscription = _auth.idTokenChanges().listen((user) {
+      print("listening...........");
+      print(user);
+      add(AuthUserChanged(user));
+    });
+  }
+
+  // Handle auth state changes here — safe to use emit
+  Future<void> _onAuthUserChanged(
+      AuthUserChanged event, Emitter<AuthState> emit) async {
+    final user = event.user;
+    if (user != null) {
+      print("authenticated");
       emit(AuthenticatedState());
-    } else if (_auth.currentUser == null) {
+    } else {
+      print("UNauthenticated");
       emit(UnAuthenticatedState());
     }
   }
