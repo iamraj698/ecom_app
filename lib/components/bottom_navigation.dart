@@ -18,7 +18,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List _tabHistory = [];
-  bool canPop = false;
+  bool canPop = true;
 
   int _currentIndex = 0;
   List<Widget> get screens => [
@@ -36,7 +36,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
     if (index == _currentIndex) return;
 
     // push current index to history, then change to new one
-    _tabHistory.add(_currentIndex);
+    _tabHistory.add(index);
+
+    // print("the index of this page is ${index}");
+    if (index == 0) {
+      _tabHistory.clear();
+      canPop = true;
+    } else {
+      canPop = false;
+    }
 
     setState(() {
       _currentIndex = index;
@@ -54,12 +62,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
           return;
         } else if (_tabHistory.isNotEmpty) {
           setState(() {
-            _currentIndex = 0;
             _tabHistory.clear();
+            _currentIndex = 0;
           });
           return;
         } else if (_tabHistory.isEmpty) {
           setState(() {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Tap again to exit"),
+              backgroundColor: Colors.black,
+            ));
             canPop = true;
           });
         }

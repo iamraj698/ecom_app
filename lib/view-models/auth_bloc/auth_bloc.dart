@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecom_app/data/repositories/auth_repository.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,7 +63,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     print("the response of sign up method \n + ${response}");
     if (response != null && response.toString() == email) {
       emit(AuthenticatedState());
-      navigatorKey.currentState?.pushReplacementNamed(RouteNames.homepage);
+      // navigatorKey.currentState?.pushReplacementNamed(RouteNames.homepage);
+      // Clear everything and make homepage the new root
+      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        RouteNames.homepage,
+        (Route<dynamic> route) => false,
+      );
     } else if (response != null) {
       emit(AuthenticationErrorState(error: response.toString()));
     } else {

@@ -147,16 +147,16 @@ class _MyDrawerState extends State<MyDrawer> {
                   print("Wishlist");
                   navigatorKey.currentState?.pop();
                   widget.onItemTapped!(1);
-                  
                 },
                 child: CustomListTile(
                     icon: Icons.favorite_outline, title: "Wishlist")),
             InkWell(
                 onTap: () {
-                  print("Sell Product");
+                  // print("Sell Product");
+                  navigatorKey.currentState?.pushNamed(RouteNames.sellProducts);
                 },
-                child: CustomListTile(
-                    icon: Icons.sell, title: "Sell Products")),
+                child:
+                    CustomListTile(icon: Icons.sell, title: "Sell Products")),
             InkWell(
                 onTap: () {
                   print("Settings");
