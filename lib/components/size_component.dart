@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class SizeComponent extends StatefulWidget {
-  SizeComponent({super.key, required String this.size});
+  SizeComponent(
+      {super.key, required String this.size, required this.controller});
   String size;
+  TextEditingController controller;
 
   @override
   State<SizeComponent> createState() => _SizeComponentState();
@@ -31,6 +33,7 @@ class _SizeComponentState extends State<SizeComponent> {
             width: width(50),
             color: CustomStyles.lightBlueColor,
             child: TextField(
+              controller: widget.controller,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(

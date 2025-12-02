@@ -3,6 +3,7 @@ import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:ecom_app/view-models/demo_bloc/demo_bloc.dart';
+import 'package:ecom_app/view-models/sell_product_bloc/sell_product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +18,7 @@ void main() async {
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (context) => DemoBloc()),
     BlocProvider(create: (context) => AuthBloc()),
+    BlocProvider(create: (context) => SellProductsBloc()),
   ], child: const MyApp()));
 }
 

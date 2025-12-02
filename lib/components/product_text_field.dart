@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +11,14 @@ class ProductTextField extends StatefulWidget {
       required this.title,
       this.inputType = TextInputType.text,
       this.inputDigit = false,
-      this.maxLines = 1});
+      this.maxLines = 1,
+      this.controller});
   String title;
   TextInputType inputType;
   bool inputDigit;
   int maxLines;
+  TextEditingController? controller;
+
   @override
   State<ProductTextField> createState() => _ProductTextFieldState();
 }
@@ -40,6 +45,7 @@ class _ProductTextFieldState extends State<ProductTextField> {
             color: Colors.grey[100],
           ),
           child: TextField(
+            controller: widget.controller,
             maxLines: widget.maxLines,
             keyboardType: widget.inputType,
             inputFormatters: widget.inputDigit

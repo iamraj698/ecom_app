@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:ecom_app/components/add_image_component.dart';
+import 'package:ecom_app/components/alert_widget.dart';
 import 'package:ecom_app/components/custom_image.dart';
+import 'package:ecom_app/components/drawer.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/product_text_field.dart';
 import 'package:ecom_app/components/size_component.dart';
 import 'package:ecom_app/components/submit.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/sell_product_bloc/sell.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SellProducts extends StatefulWidget {
@@ -24,6 +28,24 @@ class _SellProductsState extends State<SellProducts> {
   File? image3;
   File? image4;
   File? image5;
+
+  TextEditingController titleController = TextEditingController();
+
+  TextEditingController subTitleController = TextEditingController();
+
+  TextEditingController brandController = TextEditingController();
+
+  TextEditingController priceController = TextEditingController();
+
+  TextEditingController descController = TextEditingController();
+
+  TextEditingController smallController = TextEditingController();
+
+  TextEditingController mediumController = TextEditingController();
+
+  TextEditingController lgController = TextEditingController();
+
+  TextEditingController xlController = TextEditingController();
 
   final _picker = ImagePicker();
 
@@ -77,20 +99,29 @@ class _SellProductsState extends State<SellProducts> {
                 child: Column(
                   children: [
                     ProductTextField(
+                      controller: titleController,
                       title: "Product Title",
                     ),
                     SizedBox(height: height(10)),
                     ProductTextField(
+                      controller: subTitleController,
                       title: "Sub Title",
                     ),
                     SizedBox(height: height(10)),
                     ProductTextField(
+                      controller: brandController,
+                      title: "Brand of the Product",
+                    ),
+                    SizedBox(height: height(10)),
+                    ProductTextField(
+                      controller: priceController,
                       title: "Price",
                       inputType: TextInputType.number,
                       inputDigit: true,
                     ),
                     SizedBox(height: height(10)),
                     ProductTextField(
+                      controller: descController,
                       title: "Description",
                       maxLines: 5,
                     ),
@@ -109,10 +140,22 @@ class _SellProductsState extends State<SellProducts> {
                 spacing: 10,
                 runSpacing: 10,
                 children: [
-                  SizeComponent(size: "S"),
-                  SizeComponent(size: "M"),
-                  SizeComponent(size: "L"),
-                  SizeComponent(size: "Xl"),
+                  SizeComponent(
+                    size: "S",
+                    controller: smallController,
+                  ),
+                  SizeComponent(
+                    size: "M",
+                    controller: mediumController,
+                  ),
+                  SizeComponent(
+                    size: "L",
+                    controller: lgController,
+                  ),
+                  SizeComponent(
+                    size: "Xl",
+                    controller: xlController,
+                  ),
                 ],
               ),
 
@@ -200,7 +243,42 @@ class _SellProductsState extends State<SellProducts> {
           ),
         ),
       ),
-      bottomNavigationBar: Submit(submitText: "Add Product", onTap: () {}),
+      bottomNavigationBar: Submit(
+          submitText: "Add Product",
+          onTap: () {
+            if (titleController.text.isEmpty ||
+                subTitleController.text.isEmpty ||
+                priceController.text.isEmpty ||
+                descController.text.isEmpty ||
+                smallController.text.isEmpty ||
+                mediumController.text.isEmpty ||
+                lgController.text.isEmpty ||
+                xlController.text.isEmpty ||
+                image1 == null ||
+                image2 == null ||
+                image3 == null ||
+                image4 == null ||
+                image5 == null) {
+              alertWidget(context,
+                  "please fill all the required details and upload all the images");
+            } else {
+              context.read<SellProductsBloc>().add(SellProductsEvent(
+                  title: titleController.text,
+                  subTitle: subTitleController.text,
+                  price: priceController.text,
+                  desc: descController.text,
+                  brand: brandController.text,
+                  smallSize: smallController.text,
+                  mdSize: mediumController.text,
+                  lgSize: lgController.text,
+                  xlSize: xlController.text,
+                  img1: image1!,
+                  img2: image2!,
+                  img3: image3!,
+                  img4: image4!,
+                  img5: image5!));
+            }
+          }),
     );
   }
 }
