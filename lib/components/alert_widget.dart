@@ -1,14 +1,15 @@
 import 'package:ecom_app/main.dart';
 import 'package:flutter/material.dart';
 
-void alertWidget(BuildContext context, String error) {
+void alertWidget(BuildContext context, String error,
+    {Color? textColor = Colors.red, String title = "Error"}) {
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text(
-          'Error',
-          style: TextStyle(color: Colors.red),
+        title: Text(
+          title,
+          style: TextStyle(color: textColor),
         ),
         content: SingleChildScrollView(
           child: ListBody(
@@ -16,7 +17,7 @@ void alertWidget(BuildContext context, String error) {
               Center(
                 child: Text(
                   error,
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: textColor),
                 ),
               ),
             ],

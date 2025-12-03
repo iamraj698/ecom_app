@@ -1,21 +1,25 @@
 import 'dart:io';
 
+import 'package:ecom_app/data/repositories/product_repository.dart';
 import 'package:ecom_app/utils/file_compress_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'sell.dart';
 
 class SellProductsBloc extends Bloc<SellEvents, SellState> {
+  ProductRepository _productRepository = ProductRepository();
   SellProductsBloc() : super(SellInitialState()) {
     on<SellProductsEvent>(_mapAddToFirebase);
   }
 
   void _mapAddToFirebase(
       SellProductsEvent event, Emitter<SellState> emit) async {
+    emit(SellAddPrdLoading());
     print("inside the sell product bloc");
     String title = event.title;
     String subTitle = event.subTitle;
     String price = event.price;
     String? brand = event.brand;
+    String desc = event.desc;
     String smallCount = event.smallSize;
     String largeCount = event.lgSize;
     String mediumCount = event.mdSize;
@@ -32,6 +36,26 @@ class SellProductsBloc extends Bloc<SellEvents, SellState> {
     String base64img4 = await compressAndConvert(img4);
     String base64img5 = await compressAndConvert(img5);
 
+    final res = await _productRepository.addProduct(
+        title,
+        subTitle,
+        brand,
+        price,
+        desc,
+        smallCount,
+        mediumCount,
+        largeCount,
+        xlCount,
+        base64img1,
+        base64img2,
+        base64img3,
+        base64img4,
+        base64img5);
+    if (res == "success") {
+      emit(SellAddProdSuccess());
+    } else {
+      emit(SellAddProdError(error: res.toString()));
+    }
   }
 
   Future<String> compressAndConvert(File file) async {
@@ -46,7 +70,7 @@ class SellProductsBloc extends Bloc<SellEvents, SellState> {
     // Step 2: Convert to Base64
     String base64Str = await fileToBase64(compressed);
 
-    print("Base64: $base64Str");
+    // print("Base64: $base64Str");
 
     return base64Str;
   }

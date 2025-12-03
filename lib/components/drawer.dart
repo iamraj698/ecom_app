@@ -153,6 +153,7 @@ class _MyDrawerState extends State<MyDrawer> {
             InkWell(
                 onTap: () {
                   // print("Sell Product");
+                  navigatorKey.currentState?.pop();
                   navigatorKey.currentState?.pushNamed(RouteNames.sellProducts);
                 },
                 child:
