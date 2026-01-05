@@ -5,13 +5,13 @@ import 'dart:convert';
 
 Future<File?> compressImage(File file) async {
   final dir = await getTemporaryDirectory();
-  final targetPath = '${dir.absolute.path}/temp.jpg';
+  final targetPath = '${dir.absolute.path}/temp.png';
 
   var result = await FlutterImageCompress.compressAndGetFile(
     file.absolute.path,
     targetPath,
-    quality: 50, // 0–100 (lower = more compression)
-    format: CompressFormat.jpeg,
+    quality: 20, // 0–100 (lower = more compression)
+    format: CompressFormat.png,
   );
   return File(result!.path);
 }

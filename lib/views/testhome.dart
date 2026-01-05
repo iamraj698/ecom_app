@@ -14,15 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utils/size_config.dart';
 import '../utils/demo-brands.dart';
 
-class HomePage extends StatefulWidget {
+class TestHome extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const HomePage({super.key, required this.scaffoldKey});
+  const TestHome({super.key, required this.scaffoldKey});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TestHome> createState() => _TestHomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _TestHomeState extends State<TestHome> {
   Set<int> wishlistedIndices = {};
   // list of brands
   List<Widget> brandItems = DemoBrands.brandDetails.map((elem) {

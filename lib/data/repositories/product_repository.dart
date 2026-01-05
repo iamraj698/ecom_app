@@ -55,31 +55,30 @@ class ProductRepository {
     }
   }
 
-  // //Firebase Sign Up method
-  // Future signOut() async {
-  //   try {
-  //     await _auth.signOut();
-  //   } on FirebaseAuthException catch (ex) {
-  //     print("Firebase Specific Exception ${ex.toString()}");
-  //     return ex;
-  //   } catch (e) {
-  //     print("General Exception ${e}");
-  //     return e;
-  //   }
-  // }
+//fetch all the products
 
-  //Firebase Sign Up method
-  // Future signIn(String email, String password) async {
-  //   try {
-  //     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return userCredential.user?.email;
-  //   } on FirebaseAuthException catch (ex) {
-  //     print("Firebase Specific Exception ${ex.message}");
-  //     return ex.message;
-  //   } catch (e) {
-  //     print("General Exception ${e}");
-  //     return e;
-  //   }
-  // }
+  Future fetchProducts() async {
+    try {
+      final res = await _firestore.collection("products").get();
+      // print(" the response is ");
+
+      // for (QueryDocumentSnapshot doc in res.docs) {
+      //   final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      //   // print("ID: ${doc.id}");
+      //   // print("Title: ${data['prouctTitle']}");
+      //   // print("Price: ${data['price']}");
+      //   // print("Description: ${data['description']}");
+      //   // print("Image Base64 length: ${data['img4']?.length}");
+      //   return data;
+      // }
+      return res;
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+    }
+  }
 }
