@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecom_app/data/repositories/auth_repository.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth.dart';
@@ -24,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _authSubscription = _auth.idTokenChanges().listen((user) {
       print("listening...........");
       print(user);
+      AppConstants.user = user;
       add(AuthUserChanged(user));
     });
   }

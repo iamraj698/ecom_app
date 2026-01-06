@@ -2,6 +2,7 @@ import 'package:ecom_app/components/custom_list_tile.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +54,10 @@ class _MyDrawerState extends State<MyDrawer> {
                 height: height(43),
                 width: width(43),
               ),
-              title: const MyText(
-                title: "Rajesab",
+              title: MyText(
+                title: (AppConstants.user != null)
+                    ? AppConstants.user!.email!
+                    : "Undefined",
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),

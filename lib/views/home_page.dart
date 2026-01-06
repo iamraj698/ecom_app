@@ -5,6 +5,7 @@ import 'package:ecom_app/components/loding_widget.dart';
 // import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/product_card.dart';
 import 'package:ecom_app/main.dart';
+import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/demo-products.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
@@ -234,16 +235,21 @@ class _HomePageState extends State<HomePage> {
 
                       if (products is QuerySnapshot) {
                         final productWidgets = products.docs.map((doc) {
-                          final data = doc.data() as Map<String, dynamic>;
+                          // final data = doc.data() as Map<String, dynamic>;
+                          // print("here___________________");
+                          // print(ProductModel.fromFirestore(doc).id);
+                          final model = ProductModel.fromFirestore(doc);
+
                           return ProductCard(
                             onCardTap: () {
-                              navigatorKey.currentState
-                                  ?.pushNamed(RouteNames.productDetails);
+                              navigatorKey.currentState?.pushNamed(
+                                  RouteNames.productDetails,
+                                  arguments: model);
                             },
-                            imagePath: data['img1'], // handle Base64 or URL
-                            title: data['prouctTitle'],
-                            price: data['price'],
-                            isWishlisted: wishlistedIndices.contains(doc.id),
+                            imagePath: model.img1, // handle Base64 or URL
+                            title: model.productTitle,
+                            price: "₹ " + model.price,
+                            isWishlisted: wishlistedIndices.contains(model.id),
                             onWishlistToggle: () {},
                           );
                         }).toList();
