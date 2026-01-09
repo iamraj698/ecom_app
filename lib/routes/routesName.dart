@@ -10,4 +10,5 @@ class RouteNames {
   static const loginPhone = "loginPhone";
   static const loginOtp = "loginOtp";
   static const sellProducts = "sellProducts";
+  static const productReview = "productReview";
 }

@@ -25,7 +25,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late ProductModel product;
   late Map sizeMap;
   late Color color;
-
   late var img1Bytes;
   late var img2Bytes;
   late var img3Bytes;
@@ -412,7 +411,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
               Column(
                 children: [
-                  CustomRowTitle(title: "Review", subTitle: "View All"),
+                  InkWell(
+                      onTap: () {
+                        navigatorKey.currentState?.pushNamed(
+                            RouteNames.productReview,
+                            arguments: {"productId": product.id});
+                      },
+                      child: CustomRowTitle(
+                          title: "Review", subTitle: "View All")),
                   SizedBox(
                     height: height(13),
                   ),

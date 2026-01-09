@@ -8,6 +8,7 @@ import 'package:ecom_app/views/cart/cart.dart';
 import 'package:ecom_app/views/home_page.dart';
 import 'package:ecom_app/views/newpage.dart';
 import 'package:ecom_app/views/product_details_page/product_details_page.dart';
+import 'package:ecom_app/views/product_review/product_review.dart';
 import 'package:ecom_app/views/sell_products/sell_products.dart';
 import 'package:ecom_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,12 @@ class RouteGenerator {
       case RouteNames.sellProducts:
         return MaterialPageRoute(
           builder: (context) => const SellProducts(),
+        );
+
+      case RouteNames.productReview:
+        return MaterialPageRoute(
+          builder: (context) => const ProductReview(),
+          settings: settings,
         );
 
       case RouteNames.newpage:

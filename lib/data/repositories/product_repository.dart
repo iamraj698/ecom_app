@@ -81,4 +81,13 @@ class ProductRepository {
       print("error ${e.toString()}");
     }
   }
+
+  //product review
+  Future addReview(
+      String review, String productId, String timeStamp, String rating) async {
+        
+
+
+
+      }
 }
