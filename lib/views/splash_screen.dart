@@ -3,6 +3,8 @@ import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
+import 'package:ecom_app/view-models/fetch_user_bloc/fetch_user_bloc.dart';
+import 'package:ecom_app/view-models/fetch_user_bloc/fetch_user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         print(state);
         if (state is AuthenticatedState) {
+          context.read<FetchUserBloc>().add(FetchUserProfile());
           navigatorKey.currentState?.pushReplacementNamed(RouteNames.homepage);
         } else {
           navigatorKey.currentState?.pushReplacementNamed(RouteNames.login);

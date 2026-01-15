@@ -1,6 +1,8 @@
+import 'package:ecom_app/components/alert_widget.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/product_text_field.dart';
 import 'package:ecom_app/components/rating_star.dart';
+import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/product_review_bloc/product_review_bloc.dart';
@@ -19,14 +21,18 @@ class _ProductReviewState extends State<ProductReview> {
   final int maxRating = 5;
   late final productId;
   int selectedIndex = 0;
+  bool isInit = false;
   TextEditingController reviewController = TextEditingController();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    productId = args["productId"];
+    if (isInit == false) {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      productId = args["productId"];
+      isInit = true;
+    }
     // print("printing the product Id from the review page ${productId}");
   }
 
@@ -98,11 +104,27 @@ class _ProductReviewState extends State<ProductReview> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      context.read<ProductReviewBloc>().add(AddReview(
-                          productId: productId,
-                          review: reviewController.text.toString(),
-                          timeStamp: DateTime.now().toString(),
-                          rating: selectedIndex.toString()));
+                      if (AppConstants.userDetails == {} ||
+                          AppConstants.userDetails['userName'] == null ||
+                          AppConstants.userDetails['userName'] == "") {
+                        alertWidget(context,
+                            "Please Complete Your Profile To Write a Review",
+                            textColor: CustomStyles.danger,
+                            title: "Complete Profile");
+                      } else {
+                        if (reviewController.text.toString() != "" ||
+                            selectedIndex.toString() != "") {
+                          alertWidget(context,
+                              "Please Write Something and Provide a Rating Between 1 to 5 star",
+                              title: "Fields Cannot Be Empty");
+                        } else {
+                          context.read<ProductReviewBloc>().add(AddReview(
+                              productId: productId,
+                              review: reviewController.text.toString(),
+                              timeStamp: DateTime.now().toString(),
+                              rating: selectedIndex.toString()));
+                        }
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const RoundedRectangleBorder(
