@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +60,14 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
               Center(
-                child: Image.asset(
-                  widget.imagePath,
+                // child: Image.asset(
+                //   widget.imagePath,
+                //   height: height(167),
+                // ),
+                child: Image.memory(
+                  base64Decode(
+                    widget.imagePath,
+                  ),
                   height: height(167),
                 ),
               ),

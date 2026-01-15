@@ -4,8 +4,10 @@ import 'package:ecom_app/components/submit.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,6 +18,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool isRememberMe = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +54,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // user name
-                  const LoginTextfield(
+                  LoginTextfield(
                     // hintText: "Esther Howard",
-                    title: "Username",
+                    controller: emailController,
+                    title: "Email Address",
                     widget: Icon(
                       Icons.check,
                       color: CustomStyles.lightGreen,
@@ -61,8 +67,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: height(10),
                   ),
 
-                  const LoginTextfield(
+                  LoginTextfield(
                     // hintText: "HJ@#9783kja",
+                    obscuredText: true,
+                    controller: passwordController,
                     title: "Password",
                     widget: MyText(
                       title: "Strong",
@@ -75,13 +83,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: height(10),
                   ),
 
-                  LoginTextfield(
-                    title: "Email Address",
-                    widget: Icon(
-                      Icons.check,
-                      color: CustomStyles.lightGreen,
-                    ),
-                  ),
+                  // LoginTextfield(
+                  //   title: "Email Address",
+                  //   widget: Icon(
+                  //     Icons.check,
+                  //     color: CustomStyles.lightGreen,
+                  //   ),
+                  // ),
 
                   SizedBox(
                     height: height(10),
@@ -194,7 +202,12 @@ class _SignUpPageState extends State<SignUpPage> {
       bottomNavigationBar: Submit(
         submitText: "SignUp",
         onTap: () {
-          navigatorKey.currentState?.pushReplacementNamed(RouteNames.login);
+          // navigatorKey.currentState?.pushReplacementNamed(RouteNames.login);
+          print(emailController.text + "   " + passwordController.text);
+
+          context.read<AuthBloc>().add(SignUpEvent(
+              email: emailController.text.toString(),
+              password: passwordController.text.toString()));
         },
       ),
     );

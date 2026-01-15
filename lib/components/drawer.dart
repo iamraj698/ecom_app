@@ -2,8 +2,12 @@ import 'package:ecom_app/components/custom_list_tile.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/utils/app_constants.dart';
+import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyDrawer extends StatefulWidget {
   final void Function(int)? onItemTapped;
@@ -45,45 +49,71 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
               ),
             ),
-            ListTile(
-              leading: Image.asset(
-                "./assets/images/profile_pic.png",
-                height: height(43),
-                width: width(43),
-              ),
-              title: const MyText(
-                title: "Rajesab",
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-              subtitle: Row(
-                children: [
-                  const MyText(title: "Verified Profile", fontSize: 11),
-                  SizedBox(
-                    width: width(4),
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.lightGreen,
-                          borderRadius: BorderRadius.circular(width(15))),
-                      child: Icon(
-                        Icons.check,
-                        size: width(13),
-                      ))
-                ],
-              ),
-              trailing: Container(
-                padding: EdgeInsets.all(width(4)),
-                decoration: BoxDecoration(
-                    color: const Color(0xffF5F5F5),
-                    borderRadius: BorderRadius.circular(width(15))),
-                width: width(66),
-                height: height(32),
-                child: const Center(
-                  child: MyText(
-                    title: "3 Orders",
-                    fontSize: 11,
-                    color: Color(0xff8F959E),
+            InkWell(
+              onTap: () {
+                navigatorKey.currentState?.pushNamed(RouteNames.editProfile,
+                    arguments: {"userId": AppConstants.user?.uid});
+              },
+              child: ListTile(
+                leading: Image.asset(
+                  "./assets/images/profile_pic.png",
+                  height: height(43),
+                  width: width(43),
+                ),
+                title: MyText(
+                  title: (AppConstants.userDetails == {} ||
+                          AppConstants.userDetails['userName'] == null ||
+                          AppConstants.userDetails['userName'] == "")
+                      ? "Undefined"
+                      : AppConstants.userDetails['userName'].toString(),
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+                subtitle: Row(
+                  children: [
+                    MyText(
+                      title: AppConstants.userDetails == {} ||
+                              AppConstants.userDetails['userName'] == null ||
+                              AppConstants.userDetails['userName'] == ""
+                          ? "Complete Profile"
+                          : "Verified Profile",
+                      fontSize: 11,
+                      color: AppConstants.userDetails == {} ||
+                              AppConstants.userDetails['userName'] == null ||
+                              AppConstants.userDetails['userName'] == ""
+                          ? Colors.red
+                          : CustomStyles.textBlack,
+                    ),
+                    SizedBox(
+                      width: width(4),
+                    ),
+                    AppConstants.userDetails == {} ||
+                            AppConstants.userDetails['userName'] == null ||
+                            AppConstants.userDetails['userName'] == ""
+                        ? SizedBox()
+                        : Container(
+                            decoration: BoxDecoration(
+                                color: Colors.lightGreen,
+                                borderRadius: BorderRadius.circular(width(15))),
+                            child: Icon(
+                              Icons.check,
+                              size: width(13),
+                            ))
+                  ],
+                ),
+                trailing: Container(
+                  padding: EdgeInsets.all(width(4)),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffF5F5F5),
+                      borderRadius: BorderRadius.circular(width(15))),
+                  width: width(66),
+                  height: height(32),
+                  child: const Center(
+                    child: MyText(
+                      title: "3 Orders",
+                      fontSize: 11,
+                      color: Color(0xff8F959E),
+                    ),
                   ),
                 ),
               ),
@@ -143,11 +173,19 @@ class _MyDrawerState extends State<MyDrawer> {
             InkWell(
                 onTap: () {
                   print("Wishlist");
-                  widget.onItemTapped!(1);
                   navigatorKey.currentState?.pop();
+                  widget.onItemTapped!(1);
                 },
                 child: CustomListTile(
                     icon: Icons.favorite_outline, title: "Wishlist")),
+            InkWell(
+                onTap: () {
+                  // print("Sell Product");
+                  navigatorKey.currentState?.pop();
+                  navigatorKey.currentState?.pushNamed(RouteNames.sellProducts);
+                },
+                child:
+                    CustomListTile(icon: Icons.sell, title: "Sell Products")),
             InkWell(
                 onTap: () {
                   print("Settings");
@@ -161,8 +199,8 @@ class _MyDrawerState extends State<MyDrawer> {
 
             InkWell(
               onTap: () {
-                navigatorKey.currentState
-                    ?.pushReplacementNamed(RouteNames.login);
+                navigatorKey.currentState?.pop();
+                context.read<AuthBloc>().add(SignOutEvent());
               },
               child: CustomListTile(
                 icon: Icons.logout,

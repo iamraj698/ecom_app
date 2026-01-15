@@ -1,11 +1,16 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
+import 'package:ecom_app/views/auth_pages/login_otp/login_otp.dart';
+import 'package:ecom_app/views/auth_pages/login_phone/login_phone.dart';
 import 'package:ecom_app/views/auth_pages/signup/signup_page.dart';
 import 'package:ecom_app/views/cart/cart.dart';
+import 'package:ecom_app/views/edit_profile/edit_profile.dart';
 import 'package:ecom_app/views/home_page.dart';
 import 'package:ecom_app/views/newpage.dart';
 import 'package:ecom_app/views/product_details_page/product_details_page.dart';
+import 'package:ecom_app/views/product_review/product_review.dart';
+import 'package:ecom_app/views/sell_products/sell_products.dart';
 import 'package:ecom_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +27,20 @@ class RouteGenerator {
           builder: (context) => const SplashScreen(),
         );
 
+      case RouteNames.loginPhone:
+        return MaterialPageRoute(
+          builder: (context) => const LoginPhone(),
+        );
+
+      case RouteNames.loginOtp:
+        return MaterialPageRoute(
+          builder: (context) => const LoginOtp(),
+        );
+
       case RouteNames.productDetails:
         return MaterialPageRoute(
           builder: (context) => const ProductDetailsPage(),
+          settings: settings,
         );
 
       case RouteNames.cart:
@@ -40,6 +56,23 @@ class RouteGenerator {
       case RouteNames.signUp:
         return MaterialPageRoute(
           builder: (context) => const SignUpPage(),
+        );
+
+      case RouteNames.sellProducts:
+        return MaterialPageRoute(
+          builder: (context) => const SellProducts(),
+        );
+
+      case RouteNames.productReview:
+        return MaterialPageRoute(
+          builder: (context) => const ProductReview(),
+          settings: settings,
+        );
+
+      case RouteNames.editProfile:
+        return MaterialPageRoute(
+          builder: (context) => const EditProfile(),
+          settings: settings,
         );
 
       case RouteNames.newpage:

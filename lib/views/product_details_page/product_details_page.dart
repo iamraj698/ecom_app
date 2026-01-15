@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:ecom_app/components/custom_row_title.dart';
 import 'package:ecom_app/components/custom_size_btn.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/rating_star.dart';
 import 'package:ecom_app/main.dart';
+import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
@@ -16,7 +20,56 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  String banner_image = "banner_image.png";
+  String? banner_image;
+  late int qtyNum;
+  late ProductModel product;
+  late Map sizeMap;
+  late Color color;
+  late var img1Bytes;
+  late var img2Bytes;
+  late var img3Bytes;
+  late var img4Bytes;
+  late var img5Bytes;
+  late var bannerBytes;
+
+  bool selected = false;
+  var selectedButton = "S";
+  String sizeText = "Pieces are availabe";
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final settings = ModalRoute.of(context)!.settings;
+    product = settings.arguments as ProductModel;
+    sizeMap = {
+      "S": product.smQty,
+      "M": product.mdQty,
+      "L": product.lgQty,
+      "XL": product.xlQty,
+    };
+    _updateQtyAndColor();
+    // qtyNum = int.parse(sizeMap[selectedButton]);
+    // if (qtyNum < 20) {
+    //   color = Colors.red;
+    // } else {
+    //   color = Colors.green;
+    // }
+
+    img1Bytes = base64Decode(product.img1);
+    img2Bytes = base64Decode(product.img2);
+    img3Bytes = base64Decode(product.img3);
+    img4Bytes = base64Decode(product.img4);
+    img5Bytes = base64Decode(product.img5);
+
+    // // Set only once
+    // banner_image ??= product.img1;
+    bannerBytes = img1Bytes;
+  }
+
+  void _updateQtyAndColor() {
+    qtyNum = int.parse(sizeMap[selectedButton]);
+    color = qtyNum < 20 ? Colors.red : Colors.green;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +79,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: Image.asset(
-                "./assets/images/appbar_assets/Cart.png",
-                height: height(45),
-                width: width(45),
-              )),
+            onPressed: () {},
+            icon: Image.asset(
+              "./assets/images/appbar_assets/Cart.png",
+              height: height(45),
+              width: width(45),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -43,11 +97,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               SizedBox(
                 width: double.infinity,
                 height: height(350),
-                child: Image.asset(
-                  "assets/images/prod_details/${banner_image}",
-                  height: height(350),
-                  // fit: BoxFit.cover,
-                ),
+                child: Image.memory(
+                    // base64Decode(banner_image!),
+                    bannerBytes),
+                // child: Image.asset(
+                //   "assets/images/prod_details/${banner_image}",
+                //   height: height(350),
+                //   // fit: BoxFit.cover,
+                // ),
               ),
               SizedBox(
                 height: height(15),
@@ -59,12 +116,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MyText(
-                        title: "Men's Printed Pullover Hoodie",
+                        title: product.productTitle,
                         fontSize: 13,
                         color: CustomStyles.lightGreyText,
                       ),
                       MyText(
-                        title: "Nike Club Fleece",
+                        title: product.subTitle,
                         fontSize: 22,
                         color: CustomStyles.textBlack,
                         fontWeight: FontWeight.w600,
@@ -74,13 +131,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MyText(
-                        title: "Price",
-                        fontSize: 13,
-                        color: CustomStyles.lightGreyText,
+                      Row(
+                        children: [
+                          MyText(
+                            title: "Price",
+                            fontSize: 13,
+                            color: CustomStyles.lightGreyText,
+                          ),
+                        ],
                       ),
-                      const MyText(
-                        title: "\$120",
+                      MyText(
+                        title: "₹ " + product.price,
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
                       )
@@ -102,69 +163,132 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          banner_image = "banner_image.png";
+                          // banner_image = product.img1;
+                          bannerBytes = img1Bytes;
                         });
                       },
                       child: SizedBox(
-                          height: height(77),
-                          width: width(77),
-                          child: Image.asset(
-                            "assets/images/prod_details/banner_image.png",
-                          )),
+                        height: height(60),
+                        width: width(60),
+                        child: ClipRRect(
+                          child: Image.memory(
+                            // base64Decode(product.img1),
+                            img1Bytes,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.asset(
+                        //   "assets/images/prod_details/banner_image.png",
+                        // ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width(10),
                     ),
                     InkWell(
                       onTap: () {
                         setState(() {
-                          banner_image = "image_1.png";
+                          // banner_image = product.img2;
+                          bannerBytes = img2Bytes;
+
+                          // print("banner changed");
+                          // print(banner_image);
                         });
                       },
                       child: InkWell(
                         child: SizedBox(
-                            height: height(77),
-                            width: width(77),
-                            child: Image.asset(
-                              "assets/images/prod_details/image_1.png",
-                            )),
+                          height: height(60),
+                          width: width(60),
+                          child: ClipRRect(
+                            child: Image.memory(
+                              // base64Decode(product.img2),
+                              img2Bytes,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          // child: Image.asset(
+                          //   "assets/images/prod_details/image_1.png",
+                          // ),
+                        ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          banner_image = "image_2.png";
-                        });
-                      },
-                      child: SizedBox(
-                          height: height(77),
-                          width: width(77),
-                          child: Image.asset(
-                            "assets/images/prod_details/image_2.png",
-                          )),
+                    SizedBox(
+                      width: width(10),
                     ),
                     InkWell(
                       onTap: () {
                         setState(() {
-                          banner_image = "image_3.png";
+                          // banner_image = product.img3;
+                          bannerBytes = img3Bytes;
+
+                          // print("banner changed");
+                          // print(banner_image);
                         });
                       },
                       child: SizedBox(
-                          height: height(77),
-                          width: width(77),
-                          child: Image.asset(
-                            "assets/images/prod_details/image_3.png",
-                          )),
+                        height: height(60),
+                        width: width(60),
+                        child: ClipRRect(
+                          child: Image.memory(
+                            // base64Decode(product.img3),
+                            img3Bytes,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.asset(
+                        //   "assets/images/prod_details/image_2.png",
+                        // )
+                      ),
+                    ),
+                    SizedBox(
+                      width: width(10),
                     ),
                     InkWell(
                       onTap: () {
                         setState(() {
-                          banner_image = "image_4.png";
+                          // banner_image = product.img4;
+                          bannerBytes = img4Bytes;
                         });
                       },
                       child: SizedBox(
-                          height: height(77),
-                          width: width(77),
-                          child: Image.asset(
-                            "assets/images/prod_details/image_4.png",
-                          )),
+                        height: height(60),
+                        width: width(60),
+                        child: ClipRRect(
+                          child: Image.memory(
+                            // base64Decode(product.img4),
+                            img4Bytes,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.asset(
+                        //   "assets/images/prod_details/image_3.png",
+                        // ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width(10),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          // banner_image = product.img5;
+                          bannerBytes = img5Bytes;
+                        });
+                      },
+                      child: SizedBox(
+                        height: height(60),
+                        width: width(60),
+                        child: ClipRRect(
+                          child: Image.memory(
+                            // base64Decode(product.img5),
+                            img5Bytes,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        // child: Image.asset(
+                        //   "assets/images/prod_details/image_4.png",
+                        // ),
+                      ),
                     ),
                   ],
                 ),
@@ -177,23 +301,84 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               SizedBox(
                 height: height(10),
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomSizeBtn(title: "S"),
-                  CustomSizeBtn(title: "M"),
-                  CustomSizeBtn(title: "L"),
-                  CustomSizeBtn(title: "XL"),
-                  CustomSizeBtn(title: "2Xl"),
+                  CustomSizeBtn(
+                    title: "S",
+                    color: (selectedButton == "S") ? Colors.grey : null,
+                    onTap: () {
+                      // selected = !selected;
+                      setState(() {
+                        selectedButton = "S";
+                        _updateQtyAndColor();
+                      });
+                    },
+                    // selected: selected,
+                  ),
+                  CustomSizeBtn(
+                    title: "M",
+                    color: (selectedButton == "M") ? Colors.grey : null,
+                    onTap: () {
+                      setState(() {
+                        selectedButton = "M";
+                        _updateQtyAndColor();
+                      });
+                    },
+                  ),
+                  CustomSizeBtn(
+                    title: "L",
+                    color: (selectedButton == "L") ? Colors.grey : null,
+                    onTap: () {
+                      setState(() {
+                        selectedButton = "L";
+                        _updateQtyAndColor();
+                      });
+                    },
+                  ),
+                  CustomSizeBtn(
+                    title: "XL",
+                    color: (selectedButton == "XL") ? Colors.grey : null,
+                    onTap: () {
+                      setState(() {
+                        selectedButton = "XL";
+                        _updateQtyAndColor();
+                      });
+                    },
+                  ),
+                  // CustomSizeBtn(title: "2Xl"),
                 ],
               ),
 
               SizedBox(
                 height: height(15),
               ),
+              (selectedButton != null)
+                  ? Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            MyText(
+                              title: sizeMap[selectedButton]! + " " + sizeText,
+                              fontSize: 17,
+                              // color: qtyNum < 20 ? Colors.red : Colors.green,
+                              color: color,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: height(15))
+                      ],
+                    )
+                  : SizedBox(),
+
+              // SizedBox(
+              //   height: height(15),
+              // ),
               // description
 
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -209,8 +394,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     height: height(5),
                   ),
                   MyText(
-                    title:
-                        "The Nike Throwback Pullover Hoodie is made from premium French terry fabric that blends a performance feel with ",
+                    title: product.description,
+                    // title:
+                    //     "The Nike Throwback Pullover Hoodie is made from premium French terry fabric that blends a performance feel with ",
                     fontSize: 15,
                     color: CustomStyles.lightGreyText,
                   )
@@ -225,7 +411,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
               Column(
                 children: [
-                  CustomRowTitle(title: "Review", subTitle: "View All"),
+                  InkWell(
+                      onTap: () {
+                        navigatorKey.currentState?.pushNamed(
+                            RouteNames.productReview,
+                            arguments: {"productId": product.id});
+                      },
+                      child: CustomRowTitle(
+                          title: "Review", subTitle: "View All")),
                   SizedBox(
                     height: height(13),
                   ),
@@ -347,7 +540,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
                   MyText(
-                    title: "\$125",
+                    title: "₹ " + product.price,
+                    // title: "\$125",
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
                   ),
