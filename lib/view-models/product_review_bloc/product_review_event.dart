@@ -18,6 +18,16 @@ class AddReview extends ProductReviewEvent {
   String timeStamp;
   String rating;
   String productId;
+
+  @override
+  List<Object> get props => [review, timeStamp, rating, productId];
 }
 
-class ViewReview extends ProductReviewEvent {}
+class DeleteReview extends ProductReviewEvent {
+  DeleteReview({required this.reviewId, required this.productID});
+  String reviewId;
+  String productID;
+
+  @override
+  List<Object> get props => [reviewId, productID];
+}
