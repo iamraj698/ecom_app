@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/fetch_firebase_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -83,11 +86,96 @@ class ProductRepository {
   }
 
   //product review
-  Future addReview(
+  Future<String?> addReview(
       String review, String productId, String timeStamp, String rating) async {
-        
+    final currentUserUId = AppConstants.user!.uid;
+    final currentUserName = AppConstants.userDetails["userName"];
+    final currentUserEmail = AppConstants.user!.email;
 
+    try {
+      final response = await _firestore
+          .collection("reviews")
+          .doc(productId)
+          .collection("allReviews")
+          .add({
+        "rating": rating,
+        "review": review,
+        "userName": currentUserName,
+        "userId": currentUserUId,
+        "userEmail": currentUserEmail,
+        "addedOn": timeStamp
+      });
 
+      print("review added successfully");
 
-      }
+      return "success";
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+      return e.toString();
+    }
+  }
+
+  // Stream fetchAllReviews({required String productId}) async* {
+  //   print("here____________________");
+  //   final snapShot = _firestore
+  //       .collection("reviews")
+  //       .doc(productId)
+  //       .collection("allReviews")
+  //       .snapshots();
+  //   print("the snapshot is ${snapShot}");
+
+  // }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> fetchAllReviews({
+    required String productId,
+  }) {
+    print("here_____________________________");
+    final stream = _firestore
+        .collection("reviews")
+        .doc(productId)
+        .collection("allReviews")
+        .snapshots();
+    print("snapShot");
+    // print(snapShot);
+
+    // stream.listen((snapshot) {
+    //   print("Documents count: ${snapshot.docs.length}");
+    //   for (var doc in snapshot.docs) {
+    //     print("Doc ID: ${doc.id}");
+    //     print("Data: ${doc.data()}");
+    //   }
+    // });
+
+    return stream;
+  }
+
+  // delete review
+  Future<String?> deleteReview({
+    required String reviewID,
+    required String productId,
+  }) async {
+    try {
+      final response = await _firestore
+          .collection("reviews")
+          .doc(productId)
+          .collection("allReviews")
+          .doc(reviewID)
+          .delete();
+
+      print("review added successfully");
+
+      return "success";
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+      return e.toString();
+    }
+  }
 }

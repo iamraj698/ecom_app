@@ -4,6 +4,7 @@ import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:ecom_app/view-models/demo_bloc/demo_bloc.dart';
 import 'package:ecom_app/view-models/edit_profile_block/edit_profile_bloc.dart';
+import 'package:ecom_app/view-models/fetch_all_reviews/fetch_all_review_bloc.dart';
 import 'package:ecom_app/view-models/fetch_user_bloc/fetch_user.dart';
 import 'package:ecom_app/view-models/product_review_bloc/product_review_bloc.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
@@ -27,6 +28,7 @@ void main() async {
     BlocProvider(create: (context) => ProductReviewBloc()),
     BlocProvider(create: (context) => FetchUserBloc()),
     BlocProvider(create: (context) => EditProfileBloc()),
+    BlocProvider(create: (context) => FetchAllReviewBloc()),
   ], child: const MyApp()));
 }
 
