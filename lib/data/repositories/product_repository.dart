@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecom_app/models/review_model/review_model.dart';
 import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/fetch_firebase_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -138,6 +139,7 @@ class ProductRepository {
         .collection("reviews")
         .doc(productId)
         .collection("allReviews")
+        .orderBy("addedOn", descending: true)
         .snapshots();
     print("snapShot");
     // print(snapShot);
@@ -177,5 +179,25 @@ class ProductRepository {
       print("error ${e.toString()}");
       return e.toString();
     }
+  }
+
+  Future fetchLatestSingleReview({required String productID}) async {
+    final response = await _firestore
+        .collection("reviews")
+        .doc(productID)
+        .collection("allReviews")
+        .orderBy("addedOn", descending: true)
+        .limit(1)
+        .get();
+
+    if (response.docs.isEmpty) {
+      return null;
+    }
+
+    return ReviewModel.fromDocumentSnapshot(response.docs.first);
+    // print("printing from the repo");
+    // for (var res in response.docs) {
+    //   print(res.data());
+    // }
   }
 }

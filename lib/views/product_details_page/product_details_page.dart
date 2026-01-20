@@ -3,14 +3,20 @@ import 'dart:typed_data';
 
 import 'package:ecom_app/components/custom_row_title.dart';
 import 'package:ecom_app/components/custom_size_btn.dart';
+import 'package:ecom_app/components/drawer.dart';
+import 'package:ecom_app/components/loding_widget.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/rating_star.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/product_review_bloc/product_review.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key});
@@ -47,6 +53,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       "XL": product.xlQty,
     };
     _updateQtyAndColor();
+
     // qtyNum = int.parse(sizeMap[selectedButton]);
     // if (qtyNum < 20) {
     //   color = Colors.red;
@@ -63,6 +70,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     // // Set only once
     // banner_image ??= product.img1;
     bannerBytes = img1Bytes;
+
+    if (product.id != null) {
+      context
+          .read<ProductReviewBloc>()
+          .add(GetLatestSingleReview(productId: product.id));
+    }
   }
 
   void _updateQtyAndColor() {
@@ -422,96 +435,270 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   SizedBox(
                     height: height(13),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                              height: height(40),
-                              width: width(40),
-                              child: Image.asset(
-                                  "./assets/images/prod_details/reviewer.png")),
-                          SizedBox(
-                            width: width(7),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const MyText(
-                                title: "Ronald Richards",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(
-                                height: height(2),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    color: CustomStyles.lightGreyText,
+                  BlocBuilder<ProductReviewBloc, ProductReviewState>(
+                    builder: (context, state) {
+                      print(state);
+                      if (state is ProductReviewLoading) {
+                        return CircularProgressIndicator();
+                      } else if (state is LatestReviewFetched) {
+                        // only Review column
+
+                        final review = state.review;
+
+                        // print(review.);
+
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        height: height(40),
+                                        width: width(40),
+                                        child: Image.asset(
+                                            "./assets/images/prod_details/reviewer.png")),
+                                    SizedBox(
+                                      width: width(7),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        MyText(
+                                          title: review.userName,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        SizedBox(
+                                          height: height(2),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.access_time,
+                                              color: CustomStyles.lightGreyText,
+                                            ),
+                                            SizedBox(
+                                              width: width(4),
+                                            ),
+                                            MyText(
+                                              title: DateFormat("dd-MM-yyy")
+                                                  .format(DateTime.parse(
+                                                      review.addedOn)),
+                                              fontSize: 11,
+                                              color: CustomStyles.lightGreyText,
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    // Row(
+                                    //   children: [
+                                    //      MyText(
+                                    //       title: rev.rating,
+                                    //       fontSize: 15,
+                                    //       fontWeight: FontWeight.w600,
+                                    //     ),
+                                    //     SizedBox(
+                                    //       width: width(3),
+                                    //     ),
+                                    //     MyText(
+                                    //       title: "rating",
+                                    //       fontSize: 13,
+                                    //       color: CustomStyles.lightGreyText,
+                                    //     )
+                                    //   ],
+                                    // ),
+                                    // SizedBox(
+                                    //   height: height(2),
+                                    // ),
+                                    Row(
+                                      children: List.generate(5, (index) {
+                                        return RatingStar(
+                                          color:
+                                              index < int.parse(review.rating)
+                                                  ? Colors.amber
+                                                  : CustomStyles.lightGreyText,
+                                        );
+                                      }),
+                                    ),
+                                    SizedBox(
+                                      height: height(5),
+                                    ),
+                                    (review.userId == AppConstants.user!.uid)
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<ProductReviewBloc>()
+                                                      .add(DeleteReview(
+                                                          reviewId: review.id,
+                                                          productID:
+                                                              product.id));
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  size: height(17),
+                                                  color: CustomStyles.danger,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height(8),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    review.review,
+                                    style: TextStyle(
+                                      color: CustomStyles.lightGreyText,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: width(4),
-                                  ),
-                                  MyText(
-                                    title: "13 Sep, 2020",
-                                    fontSize: 11,
-                                    color: CustomStyles.lightGreyText,
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const MyText(
-                                title: "4.8",
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+
+                        // return Column(
+                        //   children: [
+                        //     Row(
+                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //       children: [
+                        //         Row(
+                        //           children: [
+                        //             SizedBox(
+                        //                 height: height(40),
+                        //                 width: width(40),
+                        //                 child: Image.asset(
+                        //                     "./assets/images/prod_details/reviewer.png")),
+                        //             SizedBox(
+                        //               width: width(7),
+                        //             ),
+                        //             Column(
+                        //               crossAxisAlignment:
+                        //                   CrossAxisAlignment.start,
+                        //               children: [
+                        //                 MyText(
+                        //                   title: review.userName,
+                        //                   fontSize: 15,
+                        //                   fontWeight: FontWeight.w600,
+                        //                 ),
+                        //                 SizedBox(
+                        //                   height: height(2),
+                        //                 ),
+                        //                 Row(
+                        //                   children: [
+                        //                     Icon(
+                        //                       Icons.access_time,
+                        //                       color: CustomStyles.lightGreyText,
+                        //                     ),
+                        //                     SizedBox(
+                        //                       width: width(4),
+                        //                     ),
+                        //                     MyText(
+                        //                       title: DateFormat("dd-MM-yyyy")
+                        //                           .format(DateTime.parse(
+                        //                               review.addedOn)),
+                        //                       fontSize: 11,
+                        //                       color: CustomStyles.lightGreyText,
+                        //                     )
+                        //                   ],
+                        //                 )
+                        //               ],
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         Column(
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Row(
+                        //               children: [
+                        //                 const MyText(
+                        //                   title: "4.8",
+                        //                   fontSize: 15,
+                        //                   fontWeight: FontWeight.w600,
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: width(3),
+                        //                 ),
+                        //                 MyText(
+                        //                   title: "rating",
+                        //                   fontSize: 13,
+                        //                   color: CustomStyles.lightGreyText,
+                        //                 )
+                        //               ],
+                        //             ),
+                        //             SizedBox(
+                        //               height: height(2),
+                        //             ),
+                        //             Row(
+                        //               children: [
+                        //                 RatingStar(),
+                        //                 RatingStar(),
+                        //                 RatingStar(),
+                        //                 RatingStar(),
+                        //                 RatingStar(
+                        //                   color: CustomStyles.lightGreyText,
+                        //                 ),
+                        //               ],
+                        //             )
+                        //           ],
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     SizedBox(
+                        //       height: height(8),
+                        //     ),
+                        //     MyText(
+                        //       title:
+                        //           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada eget vitae amet...",
+                        //       fontSize: 15,
+                        //       color: CustomStyles.lightGreyText,
+                        //     )
+                        //   ],
+                        // );
+                      } else if (state is LatestReviewFetchedZero) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "There are No Reviews Click on View All to Add Yours",
+                                style: TextStyle(
+                                  color: CustomStyles.lightGreyText,
+                                ),
                               ),
-                              SizedBox(
-                                width: width(3),
-                              ),
-                              MyText(
-                                title: "rating",
-                                fontSize: 13,
-                                color: CustomStyles.lightGreyText,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: height(2),
-                          ),
-                          Row(
-                            children: [
-                              RatingStar(),
-                              RatingStar(),
-                              RatingStar(),
-                              RatingStar(),
-                              RatingStar(
-                                color: CustomStyles.lightGreyText,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: height(8),
-                  ),
-                  MyText(
-                    title:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada eget vitae amet...",
-                    fontSize: 15,
-                    color: CustomStyles.lightGreyText,
+                            )
+                          ],
+                        );
+                      } else if (state is ProductDeleteReviewSuccess) {
+                        context
+                            .read<ProductReviewBloc>()
+                            .add(GetLatestSingleReview(productId: product.id));
+                      }
+
+                      return SizedBox();
+                    },
                   )
                 ],
               ),

@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecom_app/data/repositories/product_repository.dart';
+import 'package:ecom_app/models/review_model/review_model.dart';
+import 'package:ecom_app/view-models/fetch_all_reviews/fetch_all_review_state.dart';
 
 import 'product_review.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +11,7 @@ class ProductReviewBloc extends Bloc<ProductReviewEvent, ProductReviewState> {
   ProductReviewBloc() : super(ProductReviewInitial()) {
     on<AddReview>(_mapAddReviewToFirebase);
     on<DeleteReview>(_mapDeleteReviewFromFirebase);
+    on<GetLatestSingleReview>(_mapFetchLatestReview);
   }
 
   void _mapAddReviewToFirebase(
@@ -43,6 +47,21 @@ class ProductReviewBloc extends Bloc<ProductReviewEvent, ProductReviewState> {
       emit(ProductDeleteReviewSuccess());
     } else {
       emit(ProductReviewError(error: response.toString()));
+    }
+  }
+
+  void _mapFetchLatestReview(
+      GetLatestSingleReview event, Emitter<ProductReviewState> emit) async {
+    String productId = event.productId;
+    final response =
+        await _productRepository.fetchLatestSingleReview(productID: productId);
+    emit(ProductReviewLoading());
+    if (response is ReviewModel) {
+      emit(LatestReviewFetched(review: response));
+    } else if (response is String) {
+      FetchReviewError(error: response);
+    } else if (response is Null) {
+      emit(LatestReviewFetchedZero());
     }
   }
 }

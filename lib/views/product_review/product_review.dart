@@ -54,6 +54,7 @@ class _ProductReviewState extends State<ProductReview> {
   Widget build(BuildContext context) {
     return BlocListener<ProductReviewBloc, ProductReviewState>(
       listener: (context, state) {
+        print(state);
         if (state is ProductReviewLoading) {
           loadingWidget(context);
         } else if (state is ProductReviewError) {
@@ -66,6 +67,9 @@ class _ProductReviewState extends State<ProductReview> {
             reviewController.clear();
           });
         } else if (state is ProductDeleteReviewSuccess) {
+          navigatorKey.currentState?.pop();
+        } else if (state is LatestReviewFetched ||
+            state is LatestReviewFetchedZero) {
           navigatorKey.currentState?.pop();
         }
       },
