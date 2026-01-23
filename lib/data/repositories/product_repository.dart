@@ -288,4 +288,87 @@ class ProductRepository {
         .snapshots();
     return stream;
   }
+
+  Future deleteCartItem({required String cartItemId}) async {
+    final userId = AppConstants.user!.uid;
+    try {
+      final response = await _firestore
+          .collection("Users")
+          .doc(userId)
+          .collection("cart")
+          .doc(cartItemId)
+          .delete();
+
+      print("cart item deleted successfully");
+
+      return "success";
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+      return e.toString();
+    }
+  }
+
+  // increment cart item
+
+  Future incrementCartItem({required String cartItemId}) async {
+    final userId = AppConstants.user!.uid;
+    final cartSnapshotRef = _firestore
+        .collection("Users")
+        .doc(userId)
+        .collection("cart")
+        .doc(cartItemId);
+
+    try {
+      final result = await _firestore.runTransaction(
+        (transaction) async {
+          final cartSnapshot = await transaction.get(cartSnapshotRef);
+
+          final quantity = cartSnapshot.get("quantity");
+          if (quantity < 4) {
+            final int newQuantity = quantity + 1;
+            transaction.update(cartSnapshotRef, {"quantity": newQuantity});
+            print("successfully incremented");
+            return "success";
+          } else {
+            throw LimitExcedes(
+                message: "Only 4 quantity is allowed to add in the cart");
+          }
+        },
+      );
+      // return result;
+    } on FirebaseException catch (e) {
+      print("error");
+    } on LimitExcedes catch (e) {
+      print(e.message);
+      return e.message;
+    } catch (e) {
+      print("error in incrementing");
+      print("error" + e.toString());
+      return e.toString();
+    }
+  }
+  //   try {
+  //     final response = await _firestore
+  //         .collection("Users")
+  //         .doc(userId)
+  //         .collection("cart")
+  //         .doc(cartItemId)
+  //         .update({"quantity":});
+
+  //     print("cart item deleted successfully");
+
+  //     return "success";
+  //   } on FirebaseException catch (ex) {
+  //     print(
+  //         "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+  //     return ex.toString();
+  //   } catch (e) {
+  //     print("error ${e.toString()}");
+  //     return e.toString();
+  //   }
+  // }
 }

@@ -10,14 +10,17 @@ class CartProductCard extends StatefulWidget {
       required this.title,
       required this.price,
       required this.quantity,
-      required this.onTap,
-      required this.size
-      });
+      required this.onDelete,
+      required this.size,
+      required this.onIncrement,
+      required this.onDecrement});
   Image banner_image;
   String title;
   String price;
   String quantity;
-  VoidCallback onTap;
+  VoidCallback onDelete;
+  VoidCallback onIncrement;
+  VoidCallback onDecrement;
   String size;
 
   @override
@@ -68,7 +71,7 @@ class _CartProductCardState extends State<CartProductCard> {
                 ),
                 MyText(
                   // title: "\$45 (-\$4.00 Tax)",
-                  title:"Size "+ widget.size,
+                  title: "Size " + widget.size,
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
                   color: CustomStyles.lightGreyText,
@@ -86,7 +89,7 @@ class _CartProductCardState extends State<CartProductCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: widget.onIncrement,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: CustomStyles.textWhite,
                           shape: CircleBorder(),
@@ -142,9 +145,12 @@ class _CartProductCardState extends State<CartProductCard> {
                     borderRadius: BorderRadius.circular(
                       width(50),
                     )),
-                child: Icon(
-                  Icons.delete_outline,
-                  color: CustomStyles.lightGreyText,
+                child: InkWell(
+                  onTap: widget.onDelete,
+                  child: Icon(
+                    Icons.delete_outline,
+                    color: CustomStyles.lightGreyText,
+                  ),
                 ),
               ),
             )

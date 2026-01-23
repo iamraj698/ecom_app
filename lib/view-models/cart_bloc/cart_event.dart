@@ -1,4 +1,6 @@
-abstract class CartEvent {
+import 'package:equatable/equatable.dart';
+
+abstract class CartEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
@@ -25,3 +27,28 @@ class AddCartProduct extends CartEvent {
 // class FetchCartItems extends CartEvent {
 //   FetchCartItems();
 // }
+
+class DeleteCartItem extends CartEvent {
+  DeleteCartItem({required this.cartProdId});
+
+  String cartProdId;
+
+  @override
+  List<Object> get props => [cartProdId];
+}
+
+class IncrementCartItem extends CartEvent {
+  IncrementCartItem({required this.cartProdId});
+
+  String cartProdId;
+
+  @override
+  List<Object> get props => [cartProdId];
+}
+
+class DecrementCartItem extends CartEvent {
+  DecrementCartItem({required this.cartProdId});
+  String cartProdId;
+  @override
+  List<Object> get props => [cartProdId];
+}

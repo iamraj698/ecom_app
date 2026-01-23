@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:ecom_app/components/alert_widget.dart';
 import 'package:ecom_app/components/custom_row_title.dart';
 import 'package:ecom_app/components/custom_size_btn.dart';
-import 'package:ecom_app/components/drawer.dart';
 import 'package:ecom_app/components/loding_widget.dart';
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/rating_star.dart';
@@ -16,7 +13,6 @@ import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/cart_bloc/cart.dart';
 import 'package:ecom_app/view-models/product_review_bloc/product_review.dart';
-import 'package:ecom_app/view-models/products_bloc/get_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -106,11 +102,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           alertWidget(context, state.error);
           errorMessage = state.error;
         } else if (state is CartStateLoading) {
-          loadingWidget(context);
+          // loadingWidget(context);
         } else if (state is CartStateSuccess) {
           navigatorKey.currentState?.pop();
           navigatorKey.currentState?.pushNamed("cart");
-        }else if( state is CartLoaded){}
+        } 
       },
       child: Scaffold(
         // extendBodyBehindAppBar: true,

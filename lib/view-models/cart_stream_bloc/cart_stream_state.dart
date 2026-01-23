@@ -1,6 +1,7 @@
 import 'package:ecom_app/models/cart_item_model/cart_item_model.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class CartStreamState {
+abstract class CartStreamState extends Equatable {
   @override
   List<Object> get props => [];
 }

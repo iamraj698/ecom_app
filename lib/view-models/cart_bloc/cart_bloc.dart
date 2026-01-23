@@ -9,6 +9,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ProductRepository _productRepository = ProductRepository();
   CartBloc() : super(CartStateInitial()) {
     on<AddCartProduct>(_mapAddToCart);
+    on<DeleteCartItem>(_mapDeleteCartItem);
+    on<IncrementCartItem>(_mapIncrementCartItem);
+
     // on<FetchCartItems>(_mapFetchCartItems);
   }
   void _mapAddToCart(AddCartProduct event, Emitter<CartState> emit) async {
@@ -39,6 +42,39 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       emit(CartProductError("Error"));
     } else {
       CartProductError(response);
+    }
+  }
+
+  // delete cart Item
+  void _mapDeleteCartItem(DeleteCartItem event, Emitter<CartState> emit) async {
+    final cartItemId = event.cartProdId;
+    emit(CartStateLoading());
+    final response =
+        await _productRepository.deleteCartItem(cartItemId: cartItemId);
+
+    if (response == "success") {
+      emit(CartStateSuccess());
+    } else {
+      emit(CartProductError(response));
+    }
+  }
+
+// Increment cart Item
+
+  // delete cart Item
+  void _mapIncrementCartItem(
+      IncrementCartItem event, Emitter<CartState> emit) async {
+    final cartItemId = event.cartProdId;
+    emit(CartStateLoading());
+    final response =
+        await _productRepository.incrementCartItem(cartItemId: cartItemId);
+
+    if (response != null) {
+      if (response == "success") {
+        emit(CartStateSuccess());
+      } else {
+        emit(CartProductError(response));
+      }
     }
   }
 

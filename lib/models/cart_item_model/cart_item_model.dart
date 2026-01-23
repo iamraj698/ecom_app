@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartItemModel {
@@ -5,7 +8,8 @@ class CartItemModel {
   final String title;
   final int price;
   final int quantity;
-  final String image;
+  // final String image;
+  final Uint8List image;
   final String qtyType;
   final DateTime createdAt;
 
@@ -30,7 +34,7 @@ class CartItemModel {
       title: data['title'] ?? '',
       price: data['price'] ?? 0,
       quantity: data['quantity'] ?? 0,
-      image: data['image'] ?? '',
+      image: base64Decode(data['image']),
       qtyType: data['qtyType'] ?? '',
       createdAt: DateTime.parse(data['createdAt']),
     );
