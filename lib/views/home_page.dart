@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             imagePath: model.img1, // handle Base64 or URL
                             title: model.productTitle,
-                            price: "₹ " + model.price,
+                            price: "₹ " + model.price.toString(),
                             isWishlisted: wishlistedIndices.contains(model.id),
                             onWishlistToggle: () {},
                           );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecom_app/data/exceptions/app_exception.dart';
 import 'package:ecom_app/models/review_model/review_model.dart';
 import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/fetch_firebase_user.dart';
@@ -14,12 +15,12 @@ class ProductRepository {
     String title,
     String subTitle,
     String? brand,
-    String price,
+    int price,
     String description,
-    String smQty,
-    String mdQty,
-    String lgQty,
-    String xlQty,
+    int smQty,
+    int mdQty,
+    int lgQty,
+    int xlQty,
     String img1,
     String img2,
     String img3,
@@ -199,5 +200,92 @@ class ProductRepository {
     // for (var res in response.docs) {
     //   print(res.data());
     // }
+  }
+
+  // Add to cart
+
+  Future addToCart({
+    required String productId,
+    required String title,
+    required int priceAtTime,
+    required String createdAt,
+    required int quantity,
+    required String banner_image,
+    required String qtyType,
+  }) async {
+    // final response = _firestore.collection(AppConstants.user!.uid!).add({});
+
+    final productRef = _firestore.collection("products").doc(productId);
+    final cartRef = _firestore
+        .collection('Users')
+        .doc(AppConstants.user!.uid)
+        .collection("cart")
+        .doc(productId + "_" + qtyType);
+
+    try {
+      await _firestore.runTransaction(
+        (transaction) async {
+          final productSnapshot = await transaction.get(productRef);
+          if (!productSnapshot.exists) {
+            throw NotFoundException(message: "product does not exist");
+          }
+          final int currentStock = productSnapshot.get(qtyType);
+          final int quantity_limit = 4;
+
+          if (currentStock < quantity) {
+            throw Exception("Out of Stock");
+          }
+
+          final cartSnapshot = await transaction.get(cartRef);
+
+          if (!cartSnapshot.exists) {
+            transaction.set(cartRef, {
+              "title": title,
+              "image": banner_image,
+              "price": priceAtTime,
+              "quantity": quantity,
+              "qtyType": qtyType,
+              "createdAt": createdAt,
+            });
+          } else {
+            final type = cartSnapshot.get("qtyType");
+            if (type == qtyType) {
+              int cartExistingQty = cartSnapshot.get("quantity");
+              int newQuantity = cartExistingQty + quantity;
+              transaction.update(cartRef, {"quantity": newQuantity});
+            } else {
+              // transaction.update(cartRef, {
+              //   qtyType: quantity,
+              // });
+              transaction.set(cartRef, {
+                "title": title,
+                "image": banner_image,
+                "price": priceAtTime,
+                "quantity": quantity,
+                "qtyType": qtyType,
+                "createdAt": createdAt,
+              });
+            }
+          }
+          // transaction.update(productRef, {qtyType: currentStock - quantity});
+        },
+      );
+      return "success";
+    } catch (e) {
+      print("error in updating the cart ${e}");
+      return e.toString();
+    }
+  }
+
+  // fetch cart repo stream
+  Stream fetchCartItems() {
+    final userId = AppConstants.user!.uid;
+
+    final stream = _firestore
+        .collection("Users")
+        .doc(userId)
+        .collection("cart")
+        .snapshots();
+    return stream;
   }
 }

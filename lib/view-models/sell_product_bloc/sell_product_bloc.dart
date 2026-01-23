@@ -17,13 +17,13 @@ class SellProductsBloc extends Bloc<SellEvents, SellState> {
     print("inside the sell product bloc");
     String title = event.title;
     String subTitle = event.subTitle;
-    String price = event.price;
+    int price = event.price;
     String? brand = event.brand;
     String desc = event.desc;
-    String smallCount = event.smallSize;
-    String largeCount = event.lgSize;
-    String mediumCount = event.mdSize;
-    String xlCount = event.xlSize;
+    int smallCount = event.smallSize;
+    int largeCount = event.lgSize;
+    int mediumCount = event.mdSize;
+    int xlCount = event.xlSize;
     File img1 = event.img1;
     File img2 = event.img2;
     File img3 = event.img3;

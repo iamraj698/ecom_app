@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:ecom_app/components/cart_address_component.dart';
 import 'package:ecom_app/components/cart_product_card.dart';
 import 'package:ecom_app/components/cart_total_component.dart';
 import 'package:ecom_app/components/my_text.dart';
-import 'package:ecom_app/main.dart';
+import 'package:ecom_app/models/cart_item_model/cart_item_model.dart';
 import 'package:ecom_app/utils/custom_styles.dart';
 import 'package:ecom_app/utils/size_config.dart';
+import 'package:ecom_app/view-models/cart_stream_bloc/cart_stream.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -15,6 +19,21 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  Map sizeChart = {
+    "smQty": "S",
+    "mdQty": "M",
+    "lgQty": "L",
+    "xlQty": "Xl",
+  };
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    context.read<CartStreamBloc>().add(FetchCartItems());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +47,48 @@ class _CartState extends State<Cart> {
           child: Column(
             // parent column
             children: [
-              const CartProductCard(),
-              SizedBox(
-                height: height(10),
+              BlocBuilder<CartStreamBloc, CartStreamState>(
+                builder: (context, state) {
+                  if (state is CartStreamLoaded) {
+                    final List<CartItemModel> cartProducts = state.cartItems;
+                  
+
+                    return ListView.builder(
+                      itemCount: cartProducts.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return CartProductCard(
+                          banner_image: Image.memory(
+                              base64Decode(cartProducts[index].image)),
+                          title: cartProducts[index].title,
+                          size: sizeChart[cartProducts[index].qtyType],
+                          price: "Rs " + cartProducts[index].price.toString(),
+                          quantity:
+                              cartProducts[index].quantity.toString(),
+                          onTap: () {},
+                        );
+                      },
+                    );
+                  }
+
+                  return SizedBox();
+                },
               ),
-              const CartProductCard(),
+
+              // CartProductCard(
+              //   banner_image: Image.asset(
+              //     "./assets/images/prod_details/banner_image.png",
+              //   ),
+              //   title: "Men's Tie-Dye T-Shirt Nike Sportswear",
+              //   price: "365rs",
+              //   quantity: "1",
+              //   onTap: () {},
+              // ),
+              // SizedBox(
+              //   height: height(10),
+              // ),
+              // const CartProductCard(),
 
               SizedBox(
                 height: height(10),

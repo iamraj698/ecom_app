@@ -26,12 +26,12 @@ class SellProductsEvent extends SellEvents {
   String title;
   String subTitle;
   String? brand;
-  String price;
+  int price;
   String desc;
-  String smallSize;
-  String mdSize;
-  String lgSize;
-  String xlSize;
+  int smallSize;
+  int mdSize;
+  int lgSize;
+  int xlSize;
   File img1;
   File img2;
   File img3;

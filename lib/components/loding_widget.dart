@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 void loadingWidget(BuildContext context) {
   showDialog(
     context: context,
+    useRootNavigator: true,
     builder: (_) => Center(
       child: Container(
           padding: EdgeInsets.only(
@@ -33,3 +34,4 @@ void loadingWidget(BuildContext context) {
     ),
   );
 }
+

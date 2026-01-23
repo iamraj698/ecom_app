@@ -1,0 +1,65 @@
+import 'package:ecom_app/data/repositories/product_repository.dart';
+import 'package:ecom_app/main.dart';
+import 'package:ecom_app/models/cart_item_model/cart_item_model.dart';
+import 'package:ecom_app/routes/routesName.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'cart.dart';
+
+class CartBloc extends Bloc<CartEvent, CartState> {
+  ProductRepository _productRepository = ProductRepository();
+  CartBloc() : super(CartStateInitial()) {
+    on<AddCartProduct>(_mapAddToCart);
+    // on<FetchCartItems>(_mapFetchCartItems);
+  }
+  void _mapAddToCart(AddCartProduct event, Emitter<CartState> emit) async {
+    emit(CartStateLoading());
+    String productId = event.productId;
+    String title = event.title;
+    int priceAtTime = event.priceAtTime;
+    String createdAt = event.createdAt;
+    String banner_image = event.banner_image;
+
+    int quantity = event.quantity;
+    String qtyType = event.qtyType;
+
+    final response = await _productRepository.addToCart(
+        productId: productId,
+        title: title,
+        priceAtTime: priceAtTime,
+        createdAt: createdAt,
+        quantity: quantity,
+        banner_image: banner_image,
+        qtyType: qtyType);
+    print("response is ______________________ ${response}");
+
+    if (response is String && response == "success") {
+      print("emit success");
+      emit(CartStateSuccess());
+    } else if (response == null) {
+      emit(CartProductError("Error"));
+    } else {
+      CartProductError(response);
+    }
+  }
+
+// fetch the cart items streams
+
+//   void _mapFetchCartItems(FetchCartItems event, Emitter<CartState> emit) async {
+//     emit(CartStateLoading());
+//     await emit.forEach(
+//       _productRepository.fetchCartItems(),
+//       onData: (snapshot) {
+//         List<CartItemModel> cartItems = snapshot.docs.map<CartItemModel>((doc) {
+//           return CartItemModel.fromDocument(doc);
+//         }).toList();
+//         for (var item in cartItems) {
+//           print(item.id);
+//         }
+//         return CartLoaded(cartItems: cartItems);
+//       },
+//       onError: (error, stackTrace) {
+//         return CartProductError(error.toString());
+//       },
+//     );
+//   }
+}
