@@ -9,6 +9,7 @@ import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/demo-products.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
+import 'package:ecom_app/view-models/product_detail_bloc/prod_details.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -244,7 +245,10 @@ class _HomePageState extends State<HomePage> {
                             onCardTap: () {
                               navigatorKey.currentState?.pushNamed(
                                   RouteNames.productDetails,
-                                  arguments: model);
+                                  arguments: {
+                                    "product_id": model.id,
+                                    "selectedButton": "S"
+                                  });
                             },
                             imagePath: model.img1, // handle Base64 or URL
                             title: model.productTitle,

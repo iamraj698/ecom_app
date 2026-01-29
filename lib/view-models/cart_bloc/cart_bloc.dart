@@ -11,6 +11,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<AddCartProduct>(_mapAddToCart);
     on<DeleteCartItem>(_mapDeleteCartItem);
     on<IncrementCartItem>(_mapIncrementCartItem);
+    on<DecrementCartItem>(_mapDecrementCartItem);
 
     // on<FetchCartItems>(_mapFetchCartItems);
   }
@@ -38,6 +39,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (response is String && response == "success") {
       print("emit success");
       emit(CartStateSuccess());
+    } else if (response == "Only 4 quantity are allowed in the cart") {
+      emit(CartProductError(response.toString()));
     } else if (response == null) {
       emit(CartProductError("Error"));
     } else {
@@ -69,12 +72,32 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final response =
         await _productRepository.incrementCartItem(cartItemId: cartItemId);
 
-    if (response != null) {
-      if (response == "success") {
-        emit(CartStateSuccess());
-      } else {
-        emit(CartProductError(response));
-      }
+    print("cart bloc ______________________________");
+    print(response);
+
+    if (response == "success") {
+      emit(CartStateSuccess());
+    } else {
+      emit(CartProductError(response));
+    }
+  }
+
+  // Decrement the cart Item
+
+  void _mapDecrementCartItem(
+      DecrementCartItem event, Emitter<CartState> emit) async {
+    final cartItemId = event.cartProdId;
+    emit(CartStateLoading());
+    final response =
+        await _productRepository.decrementCartItem(cartItemId: cartItemId);
+
+    print("cart bloc ______________________________");
+    print(response);
+
+    if (response == "success") {
+      emit(CartStateSuccess());
+    } else {
+      emit(CartProductError(response));
     }
   }
 

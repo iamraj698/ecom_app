@@ -115,7 +115,7 @@ class _CartProductCardState extends State<CartProductCard> {
                       width: width(5),
                     ),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: widget.onDecrement,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: CustomStyles.textWhite,
                           shape: CircleBorder(),

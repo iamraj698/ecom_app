@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecom_app/data/exceptions/app_exception.dart';
+import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/models/review_model/review_model.dart';
 import 'package:ecom_app/utils/app_constants.dart';
 import 'package:ecom_app/utils/fetch_firebase_user.dart';
@@ -78,6 +79,51 @@ class ProductRepository {
       //   return data;
       // }
       return res;
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+    }
+  }
+
+  // fetch single product
+
+  Future fetchSingleProduct({required String product_id}) async {
+    // print("here_______________________________________");
+    try {
+      final res = await _firestore.collection("products").doc(product_id).get();
+      return res;
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+    }
+  }
+
+  Future productDetailCartIsExist(
+      {required String product_id, required String qtyType}) async {
+    // print("here_______________________________________");
+    try {
+      final res = await _firestore
+          .collection("Users")
+          .doc(AppConstants.user!.uid)
+          .collection("cart")
+          .doc(product_id + "_" + qtyType)
+          .get();
+
+      if (res.exists) {
+        print("record exist send true");
+        return true;
+      } else {
+        print("record does not exisits send false");
+        return false;
+      }
+
+      // return res;
     } on FirebaseException catch (ex) {
       print(
           "Firebase Specific Exception in fetching the products  ${ex.toString()}");
@@ -238,6 +284,10 @@ class ProductRepository {
 
           final cartSnapshot = await transaction.get(cartRef);
 
+          // if (quantity > 4) {
+          //   throw Exception("Onnly 4 quantity is allowed");
+          // }
+
           if (!cartSnapshot.exists) {
             transaction.set(cartRef, {
               "title": title,
@@ -252,6 +302,10 @@ class ProductRepository {
             if (type == qtyType) {
               int cartExistingQty = cartSnapshot.get("quantity");
               int newQuantity = cartExistingQty + quantity;
+              if (newQuantity > 4) {
+                throw LimitExcedes(
+                    message: "Only 4 quantity are allowed in the cart");
+              }
               transaction.update(cartRef, {"quantity": newQuantity});
             } else {
               // transaction.update(cartRef, {
@@ -271,6 +325,9 @@ class ProductRepository {
         },
       );
       return "success";
+    } on LimitExcedes catch (e) {
+      print("limit excedes exception");
+      return e.message;
     } catch (e) {
       print("error in updating the cart ${e}");
       return e.toString();
@@ -339,7 +396,7 @@ class ProductRepository {
           }
         },
       );
-      // return result;
+      return "success";
     } on FirebaseException catch (e) {
       print("error");
     } on LimitExcedes catch (e) {
@@ -351,6 +408,57 @@ class ProductRepository {
       return e.toString();
     }
   }
+
+// decrement cart item
+  Future decrementCartItem({required String cartItemId}) async {
+    final userId = AppConstants.user!.uid;
+    final cartSnapshotRef = _firestore
+        .collection("Users")
+        .doc(userId)
+        .collection("cart")
+        .doc(cartItemId);
+
+    try {
+      final result = await _firestore.runTransaction(
+        (transaction) async {
+          final cartSnapshot = await transaction.get(cartSnapshotRef);
+
+          if (!cartSnapshot.exists) {
+            throw Exception("Cart item does not exist");
+          }
+          final quantity = cartSnapshot.get("quantity");
+
+          if (quantity != null) {
+            if (quantity > 1) {
+              final int newQuantity = quantity - 1;
+              transaction.update(cartSnapshotRef, {"quantity": newQuantity});
+              print("successfully Decremented");
+              return "success";
+            } else if (quantity == 1) {
+              transaction.delete(cartSnapshotRef);
+              print("product completly removed from the cart");
+              return "success";
+            } else {
+              // throw LimitExcedes(
+              //     message: "Only 4 quantity is allowed to add in the cart");
+              throw Exception("Unable to delete the product");
+            }
+          }
+        },
+      );
+      return result;
+    } on FirebaseException catch (e) {
+      print("error");
+    } on LimitExcedes catch (e) {
+      print(e.message);
+      return e.message;
+    } catch (e) {
+      print("error in incrementing");
+      print("error" + e.toString());
+      return e.toString();
+    }
+  }
+
   //   try {
   //     final response = await _firestore
   //         .collection("Users")
