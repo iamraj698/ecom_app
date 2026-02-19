@@ -479,4 +479,67 @@ class ProductRepository {
   //     return e.toString();
   //   }
   // }
+
+  Future getWishlistIds() async {
+    final userId = AppConstants.user!.uid;
+    try {
+      final response = await _firestore
+          .collection('Users')
+          .doc(userId)
+          .collection('wishlist')
+          .get();
+      print("prod repo get wishlist");
+      print(response.docs);
+      return response;
+    } on FirebaseException catch (ex) {
+      print(
+          "Firebase Specific Exception in fetching the products  ${ex.toString()}");
+      return ex.toString();
+    } catch (e) {
+      print("error ${e.toString()}");
+      return e.toString();
+    }
+  }
+
+  Future addToWishlist(
+      {required String productId,
+      required String banner_image,
+      required String title,
+      required int price}) async {
+    final userId = AppConstants.user!.uid;
+    final wishListRef = _firestore
+        .collection('Users')
+        .doc(userId)
+        .collection('wishlist')
+        .doc(productId);
+    try {
+      final result = await _firestore.runTransaction(
+        (transaction) async {
+          final wishListDoc = await transaction.get(wishListRef);
+          if (!wishListDoc.exists) {
+            transaction.set(wishListRef, {
+              "productId": productId,
+              "banner_image": banner_image,
+              "title": title,
+              "price": price
+            });
+            return "success";
+          } else {
+            transaction.delete(wishListRef);
+            return "success";
+          }
+        },
+      );
+      return result;
+    } on FirebaseException catch (e) {
+      print("error");
+    } on LimitExcedes catch (e) {
+      print(e.message);
+      return e.message;
+    } catch (e) {
+      print("error in incrementing");
+      print("error" + e.toString());
+      return e.toString();
+    }
+  }
 }

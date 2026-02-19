@@ -6,11 +6,13 @@ import 'package:ecom_app/components/loding_widget.dart';
 import 'package:ecom_app/components/product_card.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/models/product_model/product_model.dart';
+import 'package:ecom_app/models/wishlist_product_model/wishlist_product_model.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/demo-products.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:ecom_app/view-models/product_detail_bloc/prod_details.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
+import 'package:ecom_app/view-models/wish_list_bloc/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utils/size_config.dart';
@@ -26,6 +28,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Set<int> wishlistedIndices = {};
+  List wishListIds = [];
+
   // list of brands
   List<Widget> brandItems = DemoBrands.brandDetails.map((elem) {
     return GestureDetector(
@@ -41,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // call the event to fetch all the products
     context.read<ProductsBloc>().add(GetAllProductsEvent());
+    context.read<WishListBloc>().add(GetAllWishListIds());
   }
 
   @override
@@ -70,14 +75,47 @@ class _HomePageState extends State<HomePage> {
     //     },
     //   );
     // }).toList();
-
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        print(state);
-        if (state is AuthLoadingState) {
-          loadingWidget(context);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            print(state);
+            if (state is AuthLoadingState) {
+              loadingWidget(context);
+            }
+          },
+        ),
+        BlocListener<WishListBloc, WishListState>(
+          listener: (context, state) {
+            if (state.isWishListing == true) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Upadating the Wishlist"),
+                duration: Duration(seconds: 3),
+                showCloseIcon: true,
+              ));
+            } else if (state.error != null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.error!),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+                showCloseIcon: true,
+              ));
+            }
+          },
+        )
+        // BlocListener<WishListBloc, WishListState>(
+        //   listenWhen: (previous, current) =>
+        //       previous.isWishListing && !current.isWishListing,
+        //   listener: (context, state) {
+        //     ScaffoldMessenger.of(context).showSnackBar(
+        //       SnackBar(
+        //         content: Text("Wishlist updated"),
+        //         duration: Duration(seconds: 2),
+        //       ),
+        //     );
+        //   },
+        // )
+      ],
       child: Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
@@ -184,22 +222,6 @@ class _HomePageState extends State<HomePage> {
                   height: height(15),
                 ),
                 CustomRowTitle(title: "Choose Brand", subTitle: "View All"),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     MyText(
-                //       title: "Choose Brand",
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 17,
-                //       color: Color(0xff1D1E20),
-                //     ),
-                //     MyText(
-                //       title: "View All",
-                //       fontSize: 13,
-                //       color: Color(0xff8F959E),
-                //     )
-                //   ],
-                // ),
 
                 // brands
                 SizedBox(
@@ -230,15 +252,18 @@ class _HomePageState extends State<HomePage> {
 
                 BlocBuilder<ProductsBloc, ProductsState>(
                   builder: (context, state) {
+                    final wishState = context.watch<WishListBloc>().state;
+
                     if (state is ProductsStateSuccess) {
                       // print(state.products['prouctTitle']);
+
                       final products = state.products;
+
+                      wishListIds =
+                          wishState.product.map((e) => e.productId).toList();
 
                       if (products is QuerySnapshot) {
                         final productWidgets = products.docs.map((doc) {
-                          // final data = doc.data() as Map<String, dynamic>;
-                          // print("here___________________");
-                          // print(ProductModel.fromFirestore(doc).id);
                           final model = ProductModel.fromFirestore(doc);
 
                           return ProductCard(
@@ -253,8 +278,14 @@ class _HomePageState extends State<HomePage> {
                             imagePath: model.img1, // handle Base64 or URL
                             title: model.productTitle,
                             price: "₹ " + model.price.toString(),
-                            isWishlisted: wishlistedIndices.contains(model.id),
-                            onWishlistToggle: () {},
+                            isWishlisted: wishListIds.contains(model.id),
+                            onWishlistToggle: () {
+                              context.read<WishListBloc>().add(AddToWishList(
+                                  banner_image: model.img1,
+                                  title: model.productTitle,
+                                  price: model.price,
+                                  productId: model.id));
+                            },
                           );
                         }).toList();
 
@@ -271,6 +302,13 @@ class _HomePageState extends State<HomePage> {
                     return SizedBox();
                   },
                 ),
+                // BlocListener<WishListBloc, WishListState>(
+                //   listener: (context, state) {
+                //     if (state.isWishListing) {
+
+                //     }
+                //   },
+                // )
               ],
             ),
           ),

@@ -99,7 +99,8 @@ class _CartProductCardState extends State<CartProductCard> {
                           // elevation: 0, // optional: remove shadow
                         ),
                         child: Icon(
-                          Icons.keyboard_arrow_up_outlined,
+                          // Icons.keyboard_arrow_up_outlined,
+                          Icons.add,
                           color: CustomStyles.lightGreyText,
                         )),
                     SizedBox(
@@ -124,7 +125,8 @@ class _CartProductCardState extends State<CartProductCard> {
                               Size(width(36), width(36)), // compact size
                         ),
                         child: Icon(
-                          Icons.keyboard_arrow_down_outlined,
+                          // Icons.keyboard_arrow_down_outlined,
+                          Icons.remove,
                           color: CustomStyles.lightGreyText,
                         )),
                   ],

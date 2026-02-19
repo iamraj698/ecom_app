@@ -68,6 +68,7 @@ class _ProductCardState extends State<ProductCard> {
                   base64Decode(
                     widget.imagePath,
                   ),
+                  gaplessPlayback: true,
                   height: height(167),
                 ),
               ),

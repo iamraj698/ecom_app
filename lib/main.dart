@@ -12,6 +12,7 @@ import 'package:ecom_app/view-models/product_detail_bloc/product_detail_bloc.dar
 import 'package:ecom_app/view-models/product_review_bloc/product_review_bloc.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
 import 'package:ecom_app/view-models/sell_product_bloc/sell_product_bloc.dart';
+import 'package:ecom_app/view-models/wish_list_bloc/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,7 +35,8 @@ void main() async {
     BlocProvider(create: (context) => FetchAllReviewBloc()),
     BlocProvider(create: (context) => CartBloc()),
     BlocProvider(create: (context) => ProductDetailBloc()),
-    BlocProvider(create: (context) => CartStreamBloc())
+    BlocProvider(create: (context) => CartStreamBloc()),
+    BlocProvider(create: (context) => WishListBloc())
 
   ], child: const MyApp()));
 }
