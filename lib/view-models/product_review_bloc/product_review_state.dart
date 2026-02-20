@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecom_app/models/review_model/review_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProductReviewState extends Equatable {
@@ -16,4 +18,13 @@ class ProductDeleteReviewSuccess extends ProductReviewState {}
 class ProductReviewError extends ProductReviewState {
   ProductReviewError({required this.error});
   String error;
+}
+
+class LatestReviewFetched extends ProductReviewState {
+  LatestReviewFetched({required this.review});
+  final ReviewModel review;
+}
+
+class LatestReviewFetchedZero extends ProductReviewState {
+  LatestReviewFetchedZero();
 }

@@ -9,11 +9,11 @@ class ProductModel {
   final String img3;
   final String img4;
   final String img5;
-  final String lgQty;
-  final String mdQty;
-  final String smQty;
-  final String xlQty;
-  final String price;
+  final int lgQty;
+  final int mdQty;
+  final int smQty;
+  final int xlQty;
+  final int price;
   final String productTitle;
   final String subTitle;
   final String sellerId;
@@ -50,11 +50,11 @@ class ProductModel {
       img3: data['img3'] ?? '',
       img4: data['img4'] ?? '',
       img5: data['img5'] ?? '',
-      lgQty: data['lgQty'] ?? '0',
-      mdQty: data['mdQty'] ?? '0',
-      smQty: data['smQty'] ?? '0',
-      xlQty: data['xlQty'] ?? '0',
-      price: data['price'] ?? '0',
+      lgQty: data['lgQty'] ?? 0,
+      mdQty: data['mdQty'] ?? 0,
+      smQty: data['smQty'] ?? 0,
+      xlQty: data['xlQty'] ?? 0,
+      price: data['price'] ?? 0,
       productTitle: data['prouctTitle'] ?? '', // ⚠ typo handled
       subTitle: data['subTitle'] ?? '',
       sellerId: data['seller_id'] ?? '',

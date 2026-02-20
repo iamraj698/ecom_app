@@ -31,3 +31,9 @@ class DeleteReview extends ProductReviewEvent {
   @override
   List<Object> get props => [reviewId, productID];
 }
+
+class GetLatestSingleReview extends ProductReviewEvent {
+  GetLatestSingleReview({required this.productId});
+  String productId;
+  List<Object> get props => [productId];
+}

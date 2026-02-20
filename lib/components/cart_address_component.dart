@@ -4,19 +4,21 @@ import 'package:ecom_app/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class CartAddressComponent extends StatelessWidget {
-  const CartAddressComponent(
+  CartAddressComponent(
       {super.key,
       required this.leading,
       required this.heading,
       required this.title,
       required this.subTitle,
-      required this.trailing});
+      required this.trailing,
+      required this.onTapSeeAll});
 
   final Widget leading;
   final String title;
   final String heading;
   final String subTitle;
   final Widget trailing;
+  VoidCallback onTapSeeAll;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,16 @@ class CartAddressComponent extends StatelessWidget {
               fontSize: 17,
               fontWeight: FontWeight.w600,
             ),
-            SizedBox(
-              height: height(16),
-              width: width(16),
-              child: Icon(
-                Icons.arrow_forward_ios,
-                color: CustomStyles.textBlack,
-                size: width(16),
+            InkWell(
+              onTap: onTapSeeAll,
+              child: SizedBox(
+                height: height(16),
+                width: width(16),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: CustomStyles.textBlack,
+                  size: width(16),
+                ),
               ),
             )
           ],

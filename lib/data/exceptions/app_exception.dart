@@ -41,3 +41,7 @@ class NotFoundException extends AppException {
   NotFoundException({String message = "Resource not found"})
       : super(message: message);
 }
+
+class LimitExcedes extends AppException {
+  LimitExcedes({String message = "Limit Reached"}) : super(message: message);
+}

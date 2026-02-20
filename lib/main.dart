@@ -2,13 +2,17 @@ import 'package:ecom_app/routes/routes.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
+import 'package:ecom_app/view-models/cart_bloc/cart.dart';
+import 'package:ecom_app/view-models/cart_stream_bloc/cart_stream_bloc.dart';
 import 'package:ecom_app/view-models/demo_bloc/demo_bloc.dart';
 import 'package:ecom_app/view-models/edit_profile_block/edit_profile_bloc.dart';
 import 'package:ecom_app/view-models/fetch_all_reviews/fetch_all_review_bloc.dart';
 import 'package:ecom_app/view-models/fetch_user_bloc/fetch_user.dart';
+import 'package:ecom_app/view-models/product_detail_bloc/product_detail_bloc.dart';
 import 'package:ecom_app/view-models/product_review_bloc/product_review_bloc.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
 import 'package:ecom_app/view-models/sell_product_bloc/sell_product_bloc.dart';
+import 'package:ecom_app/view-models/wish_list_bloc/wishlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +33,11 @@ void main() async {
     BlocProvider(create: (context) => FetchUserBloc()),
     BlocProvider(create: (context) => EditProfileBloc()),
     BlocProvider(create: (context) => FetchAllReviewBloc()),
+    BlocProvider(create: (context) => CartBloc()),
+    BlocProvider(create: (context) => ProductDetailBloc()),
+    BlocProvider(create: (context) => CartStreamBloc()),
+    BlocProvider(create: (context) => WishListBloc())
+
   ], child: const MyApp()));
 }
 
