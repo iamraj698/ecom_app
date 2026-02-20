@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Set<int> wishlistedIndices = {};
   List wishListIds = [];
+  bool addToWishlist = true;
 
   // list of brands
   List<Widget> brandItems = DemoBrands.brandDetails.map((elem) {
@@ -93,6 +94,9 @@ class _HomePageState extends State<HomePage> {
                 duration: Duration(seconds: 3),
                 showCloseIcon: true,
               ));
+              addToWishlist = false;
+            } else if (state.isWishListing == false) {
+              addToWishlist = true;
             } else if (state.error != null) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.error!),
@@ -280,6 +284,7 @@ class _HomePageState extends State<HomePage> {
                             price: "₹ " + model.price.toString(),
                             isWishlisted: wishListIds.contains(model.id),
                             onWishlistToggle: () {
+                              if (!addToWishlist) return;
                               context.read<WishListBloc>().add(AddToWishList(
                                   banner_image: model.img1,
                                   title: model.productTitle,

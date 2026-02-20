@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/product_card.dart';
+import 'package:ecom_app/main.dart';
+import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/utils/demo_wish_list.dart';
 import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/view-models/wish_list_bloc/wishlist.dart';
@@ -22,6 +24,7 @@ class _WishListState extends State<WishList> {
   Set<int> wishlistedIndices = {};
   List wishlistId = [];
   int totalItems = 0;
+  bool addToWishlist = true;
 
   @override
   void initState() {
@@ -44,6 +47,11 @@ class _WishListState extends State<WishList> {
             setState(() {
               totalItems = state.product.length;
             });
+            if (state.isWishListing == true) {
+              addToWishlist = false;
+            } else if (state.isWishListing == false) {
+              addToWishlist = true;
+            }
           },
         )
       ],
@@ -157,13 +165,32 @@ class _WishListState extends State<WishList> {
                               isWishlisted:
                                   wishlistId.contains(product.productId),
                               onWishlistToggle: () {
-                                context.read<WishListBloc>().add(AddToWishList(
-                                    banner_image: product.bannerImage,
-                                    title: product.title,
-                                    price: product.price,
-                                    productId: product.productId));
+                                if (!addToWishlist) return;
+                                context.read<WishListBloc>().add(
+                                      AddToWishList(
+                                        banner_image: product.bannerImage,
+                                        title: product.title,
+                                        price: product.price,
+                                        productId: product.productId,
+                                      ),
+                                    );
+                                // (addToWishlist == true)
+                                //     ? context.read<WishListBloc>().add(
+                                //         AddToWishList(
+                                //             banner_image: product.bannerImage,
+                                //             title: product.title,
+                                //             price: product.price,
+                                //             productId: product.productId))
+                                //     : null;
                               },
-                              onCardTap: () {},
+                              onCardTap: () {
+                                navigatorKey.currentState?.pushNamed(
+                                    RouteNames.productDetails,
+                                    arguments: {
+                                      "product_id": product.productId,
+                                      "selectedButton": "S"
+                                    });
+                              },
                             );
                           }).toList(),
                         );
