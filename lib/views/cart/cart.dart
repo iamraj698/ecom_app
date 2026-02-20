@@ -39,6 +39,20 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    List demolist = [
+      "1",
+      "2",
+      "3",
+      "1",
+      "2",
+      "3",
+      "1",
+      "2",
+      "3",
+      "1",
+      "2",
+      "3",
+    ];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -86,7 +100,7 @@ class _CartState extends State<Cart> {
                             ListView.builder(
                               itemCount: cartProducts.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
@@ -147,6 +161,117 @@ class _CartState extends State<Cart> {
                             Column(
                               children: [
                                 CartAddressComponent(
+                                  onTapSeeAll: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          height: height(400),
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              color: CustomStyles.cartImagBack,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    Radius.circular(width(100)),
+                                                topRight:
+                                                    Radius.circular(width(100)),
+                                              )),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: ListView.builder(
+                                                  // shrinkWrap: true,
+                                                  itemCount: demolist.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.all(
+                                                          width(15)),
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.person,
+                                                                size:
+                                                                    height(30),
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                    width(10),
+                                                              ),
+                                                              const MyText(
+                                                                title:
+                                                                    "Rajesab Muddebihal",
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.phone,
+                                                                size:
+                                                                    height(30),
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                    width(10),
+                                                              ),
+                                                              const MyText(
+                                                                  title:
+                                                                      "990011332",
+                                                                  fontSize: 14)
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .location_on,
+                                                                size:
+                                                                    height(30),
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                    width(10),
+                                                              ),
+                                                              const Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  MyText(
+                                                                      title:
+                                                                          "Near Dargha Alampur pete Ilkal.",
+                                                                      fontSize:
+                                                                          14),
+                                                                  MyText(
+                                                                      title:
+                                                                          "Ilkal,Karnataka. 587154.",
+                                                                      fontSize:
+                                                                          14)
+                                                                ],
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                    // return ListTile(
+                                                    //   title: MyText(title: "Rajesab Muddebihal", fontSize: 14, fontWeight: FontWeight.bold,),
+                                                    //   subtitle: MyText(title: "", fontSize: fontSize),
+                                                    // );
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                   leading: Container(
                                       // color: CustomStyles.lightGreyText,
                                       // padding: const EdgeInsets.all(10),
@@ -165,7 +290,7 @@ class _CartState extends State<Cart> {
                                             height: height(20),
                                             width: width(20),
                                             decoration: BoxDecoration(
-                                                color: Color(0xffFF7043),
+                                                color: const Color(0xffFF7043),
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             child: Image.asset(
@@ -190,11 +315,12 @@ class _CartState extends State<Cart> {
                                   height: height(10),
                                 ),
                                 CartAddressComponent(
+                                  onTapSeeAll: () {},
                                   leading: Container(
                                     // color: CustomStyles.lightGreyText,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: Color(0xffF5F6FA)),
+                                        color: const Color(0xffF5F6FA)),
                                     padding: const EdgeInsets.all(10),
                                     height: height(50),
                                     width: width(50),
@@ -273,16 +399,16 @@ class _CartState extends State<Cart> {
                                       ],
                                     ),
                                   )
-                                : SizedBox()
+                                : const SizedBox()
                           ],
                         );
                       }
                     }
 
-                    return Column(
+                    return const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Center(
+                        Center(
                           child: MyText(
                               title: "No Products In The Cart", fontSize: 14),
                         ),
