@@ -1,5 +1,6 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/views/add_address/add_address.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
 import 'package:ecom_app/views/auth_pages/login_otp/login_otp.dart';
 import 'package:ecom_app/views/auth_pages/login_phone/login_phone.dart';
@@ -72,6 +73,11 @@ class RouteGenerator {
       case RouteNames.editProfile:
         return MaterialPageRoute(
           builder: (context) => const EditProfile(),
+          settings: settings,
+        );
+      case RouteNames.addAddress:
+        return MaterialPageRoute(
+          builder: (context) => const AddAddress(),
           settings: settings,
         );
 

@@ -12,4 +12,6 @@ class RouteNames {
   static const sellProducts = "sellProducts";
   static const productReview = "productReview";
   static const editProfile = "editProfile";
+  static const addAddress = "addAddress";
+
 }
