@@ -43,6 +43,9 @@ class _CartState extends State<Cart> {
     "country": "",
   };
 
+  Map<String, dynamic> finalProductDetails = {};
+  bool checkOut = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -124,7 +127,16 @@ class _CartState extends State<Cart> {
                         print(finalTotal);
                       }
 
+                      finalProductDetails = {
+                        "finalTotal": finalTotal,
+                        "cartItems": cartProducts,
+                        "selectedAddress": selectedAddress,
+                        "shippingCost": (finalTotal * 15 / 100),
+                        "dateTime": DateTime.now()
+                      };
+
                       if (cartProducts.isNotEmpty) {
+                        checkOut = true;
                         return Column(
                           children: [
                             ListView.builder(
@@ -516,334 +528,44 @@ class _CartState extends State<Cart> {
                                   },
                                 ),
 
-                                // payment
-                                SizedBox(
-                                  height: height(10),
-                                ),
-                                CartAddressComponent(
-                                  onTapSeeAll: () {},
-                                  leading: Container(
-                                    // color: CustomStyles.lightGreyText,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: const Color(0xffF5F6FA)),
-                                    padding: const EdgeInsets.all(10),
-                                    height: height(50),
-                                    width: width(50),
-                                    child: Image.asset(
-                                      "./assets/images/card_address/visa.png",
-                                      // height: height(50),
-                                      // fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  heading: "Payment Method",
-                                  title: "Visa Classic",
-                                  subTitle: "**** 7690",
-                                  trailing: Container(
-                                      height: height(25),
-                                      width: width(25),
-                                      decoration: BoxDecoration(
-                                          color: CustomStyles.checkBack,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: const Icon(Icons.check)),
-                                ),
+                                //   // payment
+                                //   SizedBox(
+                                //     height: height(10),
+                                //   ),
+                                //   CartAddressComponent(
+                                //     onTapSeeAll: () {},
+                                //     leading: Container(
+                                //       // color: CustomStyles.lightGreyText,
+                                //       decoration: BoxDecoration(
+                                //           borderRadius: BorderRadius.circular(15),
+                                //           color: const Color(0xffF5F6FA)),
+                                //       padding: const EdgeInsets.all(10),
+                                //       height: height(50),
+                                //       width: width(50),
+                                //       child: Image.asset(
+                                //         "./assets/images/card_address/visa.png",
+                                //         // height: height(50),
+                                //         // fit: BoxFit.cover,
+                                //       ),
+                                //     ),
+                                //     heading: "Payment Method",
+                                //     title: "Visa Classic",
+                                //     subTitle: "**** 7690",
+                                //     trailing: Container(
+                                //         height: height(25),
+                                //         width: width(25),
+                                //         decoration: BoxDecoration(
+                                //             color: CustomStyles.checkBack,
+                                //             borderRadius:
+                                //                 BorderRadius.circular(15)),
+                                //         child: const Icon(Icons.check)),
+                                //   ),
                               ],
                             ),
-
-                            // END builder
-                            // Column(
-                            //   children: [
-                            //     InkWell(
-                            //       onTap: () {
-                            //         CustomBottomSheet().bottomSheet(
-                            //           context,
-                            //           Column(
-                            //             children: [
-                            //               BlocBuilder<AddressBloc,
-                            //                   AddressState>(
-                            //                 builder: (context, state) {
-                            //                   if (state is AddressFetched) {
-                            //                     List<AddressModel>? addresses =
-                            //                         state.address;
-
-                            //                     if (addresses!.length != 0) {
-                            //                       return Expanded(
-                            //                         child: ListView.builder(
-                            //                           itemCount:
-                            //                               addresses!.length,
-                            //                           itemBuilder:
-                            //                               (context, index) {
-                            //                             return InkWell(
-                            //                               onTap: () {
-                            //                                 print(index);
-                            //                                 setState(() {
-                            //                                   selectedAddress[
-                            //                                           'name'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .name;
-
-                            //                                   selectedAddress[
-                            //                                           'area'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .area;
-                            //                                   selectedAddress[
-                            //                                           'city'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .city;
-                            //                                   selectedAddress[
-                            //                                           'state'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .state;
-                            //                                   selectedAddress[
-                            //                                           'country'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .country;
-                            //                                   selectedAddress[
-                            //                                           'phone'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .phone
-                            //                                           .toString();
-                            //                                   selectedAddress[
-                            //                                           'pincode'] =
-                            //                                       addresses[
-                            //                                               index]
-                            //                                           .pincode
-                            //                                           .toString();
-                            //                                 });
-                            //                                 navigatorKey
-                            //                                     .currentState
-                            //                                     ?.pop();
-                            //                               },
-                            //                               child: Padding(
-                            //                                 padding:
-                            //                                     EdgeInsets.all(
-                            //                                         width(15)),
-                            //                                 child: Column(
-                            //                                   children: [
-                            //                                     Row(
-                            //                                       children: [
-                            //                                         Icon(
-                            //                                           Icons
-                            //                                               .person,
-                            //                                           size: height(
-                            //                                               30),
-                            //                                         ),
-                            //                                         SizedBox(
-                            //                                           width:
-                            //                                               width(
-                            //                                                   10),
-                            //                                         ),
-                            //                                         MyText(
-                            //                                           title: addresses[
-                            //                                                   index]
-                            //                                               .name,
-                            //                                           fontSize:
-                            //                                               14,
-                            //                                           fontWeight:
-                            //                                               FontWeight
-                            //                                                   .bold,
-                            //                                         ),
-                            //                                       ],
-                            //                                     ),
-                            //                                     Row(
-                            //                                       children: [
-                            //                                         Icon(
-                            //                                           Icons
-                            //                                               .phone,
-                            //                                           size: height(
-                            //                                               30),
-                            //                                         ),
-                            //                                         SizedBox(
-                            //                                           width:
-                            //                                               width(
-                            //                                                   10),
-                            //                                         ),
-                            //                                         MyText(
-                            //                                             title: addresses[index]
-                            //                                                 .phone
-                            //                                                 .toString(),
-                            //                                             fontSize:
-                            //                                                 14)
-                            //                                       ],
-                            //                                     ),
-                            //                                     Row(
-                            //                                       children: [
-                            //                                         Icon(
-                            //                                           Icons
-                            //                                               .location_on,
-                            //                                           size: height(
-                            //                                               30),
-                            //                                         ),
-                            //                                         SizedBox(
-                            //                                           width:
-                            //                                               width(
-                            //                                                   10),
-                            //                                         ),
-                            //                                         Column(
-                            //                                           crossAxisAlignment:
-                            //                                               CrossAxisAlignment
-                            //                                                   .start,
-                            //                                           children: [
-                            //                                             MyText(
-                            //                                                 title:
-                            //                                                     addresses[index].area,
-                            //                                                 fontSize: 14),
-                            //                                             MyText(
-                            //                                                 title:
-                            //                                                     // "Ilkal,Karnataka. 587154.",
-                            //                                                     addresses[index].city + ", " + addresses[index].state + "." + " " + addresses[index].pincode.toString(),
-                            //                                                 fontSize: 14)
-                            //                                           ],
-                            //                                         )
-                            //                                       ],
-                            //                                     )
-                            //                                   ],
-                            //                                 ),
-                            //                               ),
-                            //                             );
-                            //                           },
-                            //                         ),
-                            //                       );
-                            //                     }
-                            //                   }
-                            //                   return SizedBox();
-                            //                 },
-                            //               ),
-                            //               SizedBox(
-                            //                 height: height(10),
-                            //               ),
-                            //               ElevatedButton(
-                            //                   onPressed: () {
-                            //                     print("add address");
-                            //                     navigatorKey.currentState
-                            //                         ?.pop();
-                            //                     navigatorKey.currentState
-                            //                         ?.pushNamed(
-                            //                             RouteNames.addAddress);
-                            //                   },
-                            //                   style: ElevatedButton.styleFrom(
-                            //                       backgroundColor:
-                            //                           CustomStyles.submit),
-                            //                   child: MyText(
-                            //                     title: "+ Add Addresss",
-                            //                     fontSize: 18,
-                            //                     color: Colors.white,
-                            //                   ))
-                            //             ],
-                            //           ),
-                            //         );
-                            //       },
-                            //       child: CartAddressComponent(
-                            //         onTapSeeAll: () {},
-                            //         leading: Container(
-                            //             // color: CustomStyles.lightGreyText,
-                            //             // padding: const EdgeInsets.all(10),
-                            //             height: height(50),
-                            //             width: width(50),
-                            //             child: Stack(
-                            //               alignment: Alignment.center,
-                            //               children: [
-                            //                 Image.asset(
-                            //                   "./assets/images/card_address/map.png",
-                            //                   // height: height(50),
-                            //                   // fit: BoxFit.cover,
-                            //                 ),
-                            //                 Positioned(
-                            //                     child: Container(
-                            //                   height: height(20),
-                            //                   width: width(20),
-                            //                   decoration: BoxDecoration(
-                            //                       color:
-                            //                           const Color(0xffFF7043),
-                            //                       borderRadius:
-                            //                           BorderRadius.circular(
-                            //                               15)),
-                            //                   child: Image.asset(
-                            //                     "./assets/images/card_address/Location.png",
-                            //                   ),
-                            //                 ))
-                            //               ],
-                            //             )),
-                            //         heading: "Delivery Address",
-                            //         title: selectedAddress["name"] +
-                            //             ", " +
-                            //             selectedAddress["area"] +
-                            //             ", " +
-                            //             selectedAddress["city"] +
-                            //             " " +
-                            //             selectedAddress["state"] +
-                            //             ", " +
-                            //             selectedAddress["pincode"],
-                            //         subTitle: selectedAddress["city"] +
-                            //             ", " +
-                            //             selectedAddress["state"],
-                            //         trailing: Container(
-                            //             height: height(25),
-                            //             width: width(25),
-                            //             decoration: BoxDecoration(
-                            //                 color: CustomStyles.checkBack,
-                            //                 borderRadius:
-                            //                     BorderRadius.circular(15)),
-                            //             child: const Icon(Icons.check)),
-                            //       ),
-                            //     ),
-                            //     SizedBox(
-                            //       height: height(10),
-                            //     ),
-                            //     CartAddressComponent(
-                            //       onTapSeeAll: () {},
-                            //       leading: Container(
-                            //         // color: CustomStyles.lightGreyText,
-                            //         decoration: BoxDecoration(
-                            //             borderRadius: BorderRadius.circular(15),
-                            //             color: const Color(0xffF5F6FA)),
-                            //         padding: const EdgeInsets.all(10),
-                            //         height: height(50),
-                            //         width: width(50),
-                            //         child: Image.asset(
-                            //           "./assets/images/card_address/visa.png",
-                            //           // height: height(50),
-                            //           // fit: BoxFit.cover,
-                            //         ),
-                            //       ),
-                            //       heading: "Payment Method",
-                            //       title: "Visa Classic",
-                            //       subTitle: "**** 7690",
-                            //       trailing: Container(
-                            //           height: height(25),
-                            //           width: width(25),
-                            //           decoration: BoxDecoration(
-                            //               color: CustomStyles.checkBack,
-                            //               borderRadius:
-                            //                   BorderRadius.circular(15)),
-                            //           child: const Icon(Icons.check)),
-                            //     ),
-                            //   ],
-                            // ),
 
                             SizedBox(
                               height: height(15),
                             ),
-
-                            //        List<int> prices = [];
-                            // int finalTotal = 0;
-
-                            // for (var prod in state.cartItems) {
-                            //   prices.add(prod.price * prod.quantity);
-                            // }
-                            // print("___________________________");
-
-                            // for (var total in prices) {
-                            //   finalTotal = finalTotal + total;
-                            //   print(finalTotal);
-                            // }
 
                             (finalTotal != 0)
                                 ? SizedBox(
@@ -876,7 +598,7 @@ class _CartState extends State<Cart> {
                                         CartTotalComponent(
                                             title: "Total",
                                             cost: "Rs " +
-                                                (finalTotal * 25 / 100 +
+                                                (finalTotal * 15 / 100 +
                                                         finalTotal)
                                                     .toString()),
                                       ],
@@ -885,6 +607,9 @@ class _CartState extends State<Cart> {
                                 : const SizedBox()
                           ],
                         );
+                      }
+                      if (cartProducts.isEmpty) {
+                        checkOut = false;
                       }
                     }
                     if (state is CartStreamStateLoading) {
@@ -918,7 +643,16 @@ class _CartState extends State<Cart> {
           splashColor: CustomStyles.submit,
           onTap: () {
             print("Checkout");
-            // navigatorKey.currentState?.pushNamed(RouteNames.cart);
+            if (checkOut == false) {
+              print("add products to cart");
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("No products in the cart"),
+                backgroundColor: Colors.red,
+              ));
+            } else if (checkOut == true) {
+              navigatorKey.currentState?.pushNamed(RouteNames.paymentPage,
+                  arguments: finalProductDetails);
+            }
           },
           child: Container(
             width: double.infinity,

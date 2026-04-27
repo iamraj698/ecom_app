@@ -5,6 +5,7 @@ import 'package:ecom_app/components/drawer.dart';
 // import 'package:ecom_app/components/my_text.dart';
 // import 'package:ecom_app/utils/size_config.dart';
 import 'package:ecom_app/views/home_page.dart';
+import 'package:ecom_app/views/orders_page.dart';
 import 'package:ecom_app/views/wish_list.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +28,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
         WishList(
           onItemTapped: _onTabTapped,
         ),
-        const Center(child: Text("3rd")),
-        const Center(child: Text("4th")),
+        // const Center(child: Text("3rd")),
+        OrdersPage(onItemTapped: _onTabTapped)
+        // const Center(child: Text("4th")),
       ];
 
   void _onTabTapped(int index) {
@@ -108,13 +110,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 label: "Wish List",
               ),
               const BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_bag_outlined), label: "Cart"),
-              const BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.wallet,
-                    // color: Colors.black,
-                  ),
-                  label: "Cart"),
+                  icon: Icon(Icons.shopping_bag_outlined), label: "Orders"),
+              // const BottomNavigationBarItem(
+              //     icon: Icon(
+              //       Icons.wallet,
+              //       // color: Colors.black,
+              //     ),
+              //     label: "Cart"),
             ]),
       ),
     );

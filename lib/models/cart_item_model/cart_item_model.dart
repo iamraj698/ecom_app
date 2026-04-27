@@ -8,7 +8,7 @@ class CartItemModel {
   final String title;
   final int price;
   final int quantity;
-  // final String image;
+  final String sellerId;
   final Uint8List image;
   final String qtyType;
   final DateTime createdAt;
@@ -18,6 +18,7 @@ class CartItemModel {
     required this.title,
     required this.price,
     required this.quantity,
+    required this.sellerId,
     required this.image,
     required this.qtyType,
     required this.createdAt,
@@ -34,6 +35,7 @@ class CartItemModel {
       title: data['title'] ?? '',
       price: data['price'] ?? 0,
       quantity: data['quantity'] ?? 0,
+      sellerId: data['seller_id'] ?? '',
       image: base64Decode(data['image']),
       qtyType: data['qtyType'] ?? '',
       createdAt: DateTime.parse(data['createdAt']),
@@ -46,6 +48,7 @@ class CartItemModel {
       'title': title,
       'price': price,
       'quantity': quantity,
+      'sellerId': sellerId,
       'image': image,
       'qtyType': qtyType,
       'createdAt': createdAt.toIso8601String(),

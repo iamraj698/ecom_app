@@ -871,14 +871,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   }
 
                                   context.read<CartBloc>().add(AddCartProduct(
-                                        productId: product.id,
-                                        title: product.productTitle,
-                                        priceAtTime: product.price,
-                                        createdAt: DateTime.now().toString(),
-                                        quantity: 1,
-                                        qtyType: sizeType[selectedButton],
-                                        banner_image: product.img1,
-                                      ));
+                                      productId: product.id,
+                                      title: product.productTitle,
+                                      priceAtTime: product.price,
+                                      createdAt: DateTime.now().toString(),
+                                      quantity: 1,
+                                      qtyType: sizeType[selectedButton],
+                                      banner_image: product.img1,
+                                      sellerId: product.sellerId));
                                 },
                                 child: Container(
                                   width: double.infinity,

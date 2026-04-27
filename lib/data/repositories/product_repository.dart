@@ -250,15 +250,15 @@ class ProductRepository {
 
   // Add to cart
 
-  Future addToCart({
-    required String productId,
-    required String title,
-    required int priceAtTime,
-    required String createdAt,
-    required int quantity,
-    required String banner_image,
-    required String qtyType,
-  }) async {
+  Future addToCart(
+      {required String productId,
+      required String title,
+      required int priceAtTime,
+      required String createdAt,
+      required int quantity,
+      required String banner_image,
+      required String qtyType,
+      required String seller_id}) async {
     // final response = _firestore.collection(AppConstants.user!.uid!).add({});
 
     final productRef = _firestore.collection("products").doc(productId);
@@ -296,6 +296,7 @@ class ProductRepository {
               "quantity": quantity,
               "qtyType": qtyType,
               "createdAt": createdAt,
+              "seller_id": seller_id
             });
           } else {
             final type = cartSnapshot.get("qtyType");
@@ -318,6 +319,7 @@ class ProductRepository {
                 "quantity": quantity,
                 "qtyType": qtyType,
                 "createdAt": createdAt,
+                "seller_id": seller_id
               });
             }
           }

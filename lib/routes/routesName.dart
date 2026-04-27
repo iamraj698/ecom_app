@@ -13,5 +13,8 @@ class RouteNames {
   static const productReview = "productReview";
   static const editProfile = "editProfile";
   static const addAddress = "addAddress";
-
+  static const paymentPage = "paymentPage";
+  static const paymentSuccess = "paymentSuccess";
+  static const ordersPage = "ordersPage";
+  static const orderDetailPage = "orderDetailPage";
 }
