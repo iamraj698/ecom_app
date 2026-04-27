@@ -304,6 +304,11 @@ class _HomePageState extends State<HomePage> {
                         );
                       }
                     }
+                    if (state is ProductsStateLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     return SizedBox();
                   },
                 ),

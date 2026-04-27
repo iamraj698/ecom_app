@@ -45,6 +45,7 @@ dependencies:
   flutter_image_compress: ^2.4.0
   path_provider: ^2.1.2
   intl: ^0.20.2
+  lottie: ^3.1.0
   # carousel_slider: ^5.1.1
 
 dev_dependencies:
@@ -76,6 +77,7 @@ flutter:
     - assets/images/products/
     - assets/images/prod_details/
     - assets/images/card_address/
+    - assets/animations/checkmark.json
 
   #   - images/a_dot_ham.jpeg
 

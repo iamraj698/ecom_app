@@ -25,6 +25,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     int quantity = event.quantity;
     String qtyType = event.qtyType;
+    String seller_id = event.sellerId;
 
     final response = await _productRepository.addToCart(
         productId: productId,
@@ -33,7 +34,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         createdAt: createdAt,
         quantity: quantity,
         banner_image: banner_image,
-        qtyType: qtyType);
+        qtyType: qtyType,
+        seller_id: seller_id);
     print("response is ______________________ ${response}");
 
     if (response is String && response == "success") {

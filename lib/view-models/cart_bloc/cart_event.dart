@@ -8,6 +8,7 @@ abstract class CartEvent extends Equatable {
 class AddCartProduct extends CartEvent {
   AddCartProduct({
     required this.productId,
+    required this.sellerId,
     required this.title,
     required this.priceAtTime,
     required this.createdAt,
@@ -16,12 +17,23 @@ class AddCartProduct extends CartEvent {
     required this.banner_image,
   });
   String productId;
+  String sellerId;
   String title;
   int priceAtTime;
   String createdAt;
   String banner_image;
   String qtyType;
   int quantity;
+  @override
+  List<Object> get props => [
+        productId,
+        sellerId,
+        title,
+        priceAtTime,
+        banner_image,
+        qtyType,
+        quantity
+      ];
 }
 
 // class FetchCartItems extends CartEvent {
