@@ -544,4 +544,42 @@ class ProductRepository {
       return e.toString();
     }
   }
+
+  Future? searchProduct({required String name}) async {
+    try {
+      final response = await _firestore
+          .collection("products")
+          .where("prouctTitle", isEqualTo: name)
+          .get();
+      // return response;
+      print("___________________________________________");
+      // print(response.docs);
+      // // if (response is QuerySnapshot) {}
+      // for (var prod in response.docs) {
+      //   print(prod.data());
+      // }
+      return response;
+    } catch (e) {
+      // return e.toString();
+      print(e.toString());
+    }
+  }
+  // Future<void> searchProduct({required String name}) async {
+  //   try {
+  //     final response = await _firestore.collection("products").get();
+
+  //     final filtered = response.docs.where((doc) {
+  //       final title = doc['productTitle'].toString();
+
+  //       return title.toLowerCase() == name.toLowerCase();
+  //     }).toList();
+
+  //     for (var doc in filtered) {
+  //       print("_____________________________");
+  //       print(doc.data());
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 }

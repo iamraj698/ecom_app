@@ -4,6 +4,7 @@ import 'package:ecom_app/components/custom_row_title.dart';
 import 'package:ecom_app/components/loding_widget.dart';
 // import 'package:ecom_app/components/my_text.dart';
 import 'package:ecom_app/components/product_card.dart';
+import 'package:ecom_app/components/searchbox.dart';
 import 'package:ecom_app/main.dart';
 import 'package:ecom_app/models/product_model/product_model.dart';
 import 'package:ecom_app/models/wishlist_product_model/wishlist_product_model.dart';
@@ -193,25 +194,38 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: height(50),
-                      width: width(275),
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F6FA),
-                          borderRadius: BorderRadius.circular(width(15))),
-                      alignment: Alignment.center,
-                      child: TextField(
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Search...",
-                          hintStyle: TextStyle(color: Color(0xff8F959E)),
-                          prefixIcon: Icon(Icons.search),
-                          isDense: true,
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: height(14)),
-                        ),
-                      ),
+                    // Container(
+                    //   height: height(50),
+                    //   width: width(275),
+                    //   decoration: BoxDecoration(
+                    //       color: Color(0xffF5F6FA),
+                    //       borderRadius: BorderRadius.circular(width(15))),
+                    //   alignment: Alignment.center,
+                    //   child: TextField(
+                    //     textAlignVertical: TextAlignVertical.center,
+                    //     decoration: InputDecoration(
+                    //       border: InputBorder.none,
+                    //       hintText: "Search...",
+                    //       hintStyle: TextStyle(color: Color(0xff8F959E)),
+                    //       prefixIcon: Icon(Icons.search),
+                    //       isDense: true,
+                    //       contentPadding:
+                    //           EdgeInsets.symmetric(vertical: height(14)),
+                    //     ),
+                    //   ),
+                    // ),
+
+                    InkWell(
+                      onTap: () {
+                        navigatorKey.currentState
+                            ?.pushNamed(RouteNames.searchPage);
+                      },
+                      child: Container(
+                          height: height(50),
+                          width: width(275),
+                          child: SearchBox(
+                            isenabled: false,
+                          )),
                     ),
                     Image.asset(
                       "./assets/images/Voice.png",

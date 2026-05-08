@@ -14,6 +14,8 @@ import 'package:ecom_app/views/payment_success/payment_success.dart';
 import 'package:ecom_app/views/payments_page/payments_page.dart';
 import 'package:ecom_app/views/product_details_page/product_details_page.dart';
 import 'package:ecom_app/views/product_review/product_review.dart';
+import 'package:ecom_app/views/search_page/search_page.dart';
+import 'package:ecom_app/views/search_results/search_results.dart';
 import 'package:ecom_app/views/sell_products/sell_products.dart';
 import 'package:ecom_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +108,17 @@ class RouteGenerator {
           settings: settings,
         );
 
+      case RouteNames.searchPage:
+        return MaterialPageRoute(
+          builder: (context) => SearchPage(),
+          settings: settings,
+        );
+
+      case RouteNames.searchResults:
+        return MaterialPageRoute(
+          builder: (context) => SearchResults(),
+          settings: settings,
+        );
       case RouteNames.newpage:
         if (settings.arguments != null) {
           final args = settings.arguments as Map<String, dynamic>;
