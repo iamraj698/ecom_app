@@ -32,7 +32,6 @@ class SignOutEvent extends AuthEvent {
   List<Object> get props => [];
 }
 
-
 class AuthUserChanged extends AuthEvent {
   AuthUserChanged(this.user);
   User? user;
@@ -40,3 +39,8 @@ class AuthUserChanged extends AuthEvent {
   List<Object?> get props => [user];
 }
 
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+
+  ForgotPasswordEvent({required this.email});
+}

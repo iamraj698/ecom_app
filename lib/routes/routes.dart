@@ -1,6 +1,7 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
 import 'package:ecom_app/views/add_address/add_address.dart';
+import 'package:ecom_app/views/auth_pages/forgot_password/forgot_password.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
 import 'package:ecom_app/views/auth_pages/login_otp/login_otp.dart';
 import 'package:ecom_app/views/auth_pages/login_phone/login_phone.dart';
@@ -18,6 +19,7 @@ import 'package:ecom_app/views/search_page/search_page.dart';
 import 'package:ecom_app/views/search_results/search_results.dart';
 import 'package:ecom_app/views/sell_products/sell_products.dart';
 import 'package:ecom_app/views/splash_screen.dart';
+import 'package:ecom_app/views/voice_search/voice_search.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -117,6 +119,18 @@ class RouteGenerator {
       case RouteNames.searchResults:
         return MaterialPageRoute(
           builder: (context) => SearchResults(),
+          settings: settings,
+        );
+
+      case RouteNames.voiceSearchPage:
+        return MaterialPageRoute(
+          builder: (context) => VoiceSearchPage(),
+          settings: settings,
+        );
+
+      case RouteNames.forgotPassword:
+        return MaterialPageRoute(
+          builder: (context) => ForgotPasswordPage(),
           settings: settings,
         );
       case RouteNames.newpage:

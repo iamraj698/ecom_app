@@ -20,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpEvent>(signUp);
     on<SignInEvent>(signIn);
     on<SignOutEvent>(signOut);
+    on<ForgotPasswordEvent>(forgotPassword);
   }
   void appStarted(AppStarted event, Emitter<AuthState> emit) {
     _authSubscription = _auth.idTokenChanges().listen((user) {
@@ -86,5 +87,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         navigatorKey.currentState?.pushReplacementNamed(RouteNames.login);
       },
     );
+  }
+
+  Future<void> forgotPassword(
+      ForgotPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(ForgotPasswordLoadingState());
+
+    try {
+      await _auth.sendPasswordResetEmail(email: event.email);
+
+      emit(ForgotPasswordSuccessState());
+    } catch (e) {
+      emit(ForgotPasswordErrorState(error: e.toString()));
+    }
   }
 }

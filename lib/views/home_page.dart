@@ -227,10 +227,16 @@ class _HomePageState extends State<HomePage> {
                             isenabled: false,
                           )),
                     ),
-                    Image.asset(
-                      "./assets/images/Voice.png",
-                      height: height(50),
-                      width: width(50),
+                    InkWell(
+                      onTap: () {
+                        navigatorKey.currentState
+                            ?.pushNamed(RouteNames.voiceSearchPage);
+                      },
+                      child: Image.asset(
+                        "./assets/images/Voice.png",
+                        height: height(50),
+                        width: width(50),
+                      ),
                     )
                   ],
                 ),

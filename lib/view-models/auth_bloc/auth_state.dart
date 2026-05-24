@@ -20,3 +20,13 @@ class AuthenticationErrorState extends AuthState {
   String error;
   AuthenticationErrorState({required this.error});
 }
+
+class ForgotPasswordLoadingState extends AuthState {}
+
+class ForgotPasswordSuccessState extends AuthState {}
+
+class ForgotPasswordErrorState extends AuthState {
+  final String error;
+
+  ForgotPasswordErrorState({required this.error});
+}

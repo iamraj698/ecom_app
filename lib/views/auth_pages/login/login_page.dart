@@ -116,50 +116,57 @@ class _LoginPageState extends State<LoginPage> {
                       height: height(10),
                     ),
 
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        MyText(
-                          title: "Forgot Password?",
-                          fontSize: 15,
-                          color: CustomStyles.danger,
-                        )
-                      ],
+                    InkWell(
+                      onTap: () {
+                        navigatorKey.currentState
+                            ?.pushNamed(RouteNames.forgotPassword);
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MyText(
+                            title: "Forgot Password?",
+                            fontSize: 15,
+                            color: CustomStyles.danger,
+                          )
+                        ],
+                      ),
                     ),
 
-                    SizedBox(
-                      height: height(10),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const MyText(title: "Remember Me", fontSize: 15),
-                        ToggleButtons(
-                          renderBorder: false,
-                          splashColor: Colors.transparent,
-                          borderColor: Colors.transparent,
-                          fillColor: Colors.transparent,
-                          isSelected: [isRememberMe],
-                          onPressed: (int index) {
-                            setState(() {
-                              isRememberMe = !isRememberMe;
-                              // toggle disabled
-                              // isDarkMode = isDarkMode;
-                            });
-                          },
-                          children: [
-                            Icon(
-                                isRememberMe
-                                    ? Icons.toggle_off
-                                    : Icons.toggle_on,
-                                size: width(50),
-                                color: isRememberMe
-                                    ? const Color(0xffD6D6D6)
-                                    : CustomStyles.lightGreen),
-                          ],
-                        ),
-                      ],
-                    ),
+                    // SizedBox(
+                    //   height: height(10),
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     const MyText(title: "Remember Me", fontSize: 15),
+                    //     ToggleButtons(
+                    //       renderBorder: false,
+                    //       splashColor: Colors.transparent,
+                    //       borderColor: Colors.transparent,
+                    //       fillColor: Colors.transparent,
+                    //       isSelected: [isRememberMe],
+                    //       onPressed: (int index) {
+                    //         setState(() {
+                    //           isRememberMe = !isRememberMe;
+                    //           // toggle disabled
+                    //           // isDarkMode = isDarkMode;
+                    //         });
+                    //       },
+                    //       children: [
+                    //         Icon(
+                    //             isRememberMe
+                    //                 ? Icons.toggle_off
+                    //                 : Icons.toggle_on,
+                    //             size: width(50),
+                    //             color: isRememberMe
+                    //                 ? const Color(0xffD6D6D6)
+                    //                 : CustomStyles.lightGreen),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
+                
                   ],
                 ),
               ),

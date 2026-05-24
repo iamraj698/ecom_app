@@ -46,6 +46,8 @@ dependencies:
   path_provider: ^2.1.2
   intl: ^0.20.2
   lottie: ^3.1.0
+  speech_to_text: ^6.5.1
+  permission_handler: ^11.3.1
   # carousel_slider: ^5.1.1
 
 dev_dependencies:
@@ -78,6 +80,8 @@ flutter:
     - assets/images/prod_details/
     - assets/images/card_address/
     - assets/animations/checkmark.json
+    - assets/animations/voiceSearch.json
+    - assets/images/voiceSearch.png
 
   #   - images/a_dot_ham.jpeg
 

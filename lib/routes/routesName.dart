@@ -19,5 +19,8 @@ class RouteNames {
   static const orderDetailPage = "orderDetailPage";
   static const searchPage = "searchPage";
   static const searchResults = "searchResults";
+  static const voiceSearchPage = "voiceSearchPage";
+  static const forgotPassword = "forgotPassword";
+
 
 }
