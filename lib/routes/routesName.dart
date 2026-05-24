@@ -17,4 +17,10 @@ class RouteNames {
   static const paymentSuccess = "paymentSuccess";
   static const ordersPage = "ordersPage";
   static const orderDetailPage = "orderDetailPage";
+  static const searchPage = "searchPage";
+  static const searchResults = "searchResults";
+  static const voiceSearchPage = "voiceSearchPage";
+  static const forgotPassword = "forgotPassword";
+
+
 }

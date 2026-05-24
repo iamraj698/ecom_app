@@ -13,6 +13,7 @@ import 'package:ecom_app/view-models/orders_bloc/orders_bloc.dart';
 import 'package:ecom_app/view-models/product_detail_bloc/product_detail_bloc.dart';
 import 'package:ecom_app/view-models/product_review_bloc/product_review_bloc.dart';
 import 'package:ecom_app/view-models/products_bloc/get_products.dart';
+import 'package:ecom_app/view-models/search_bloc/search_bloc.dart';
 import 'package:ecom_app/view-models/sell_product_bloc/sell_product_bloc.dart';
 import 'package:ecom_app/view-models/wish_list_bloc/wishlist.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,7 @@ void main() async {
     BlocProvider(create: (context) => WishListBloc()),
     BlocProvider(create: (context) => AddressBloc()),
     BlocProvider(create: (context) => OrderBloc()),
-
-
+    BlocProvider(create: (context) => SearchBloc()),
   ], child: const MyApp()));
 }
 
