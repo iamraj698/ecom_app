@@ -62,6 +62,17 @@ class _SearchResultsState extends State<SearchResults> {
   bool isProductModel = false;
   String errorMessage = "";
 
+  Set<int> wishlistedIndices = {};
+  List wishListIds = [];
+  bool addToWishlist = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<WishListBloc>().add(GetAllWishListIds());
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -88,54 +99,100 @@ class _SearchResultsState extends State<SearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isProductModel
-          ? (productModel.isNotEmpty)
-              ? SafeArea(
-                child: GridView.builder(
-                    padding:  EdgeInsets.all(width(20)),
-                    itemCount: productModel.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, 
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.65,
-                    ),
-                    itemBuilder: (context, index) {
-                      final product = productModel[index];
-                
-                      return ProductCard(
-                        imagePath: product!.img1,
-                        title: product.productTitle,
-                        price: "₹ ${product.price} ",
-                        isWishlisted: true,
-                        onWishlistToggle: () {
-                          context.read<WishListBloc>().add(
-                                AddToWishList(
-                                  banner_image: product.img1,
-                                  title: product.productTitle,
-                                  price: product.price,
-                                  productId: product.id,
-                                ),
+    return BlocConsumer<WishListBloc, WishListState>(
+      listenWhen: (previous, current) {
+        return previous.isWishListing != current.isWishListing;
+      },
+      listener: (context, state) {
+        if (ModalRoute.of(context)?.isCurrent != true) return;
+        if (state.isWishListing == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Updating Wishlist"),
+              duration: Duration(seconds: 2),
+              showCloseIcon: true,
+            ),
+          );
+
+          addToWishlist = false;
+        } else if (state.isWishListing == false) {
+          addToWishlist = true;
+        }
+
+        if (state.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      builder: (context, wishState) {
+        // get all wishlist product ids
+        wishListIds = wishState.product.map((e) => e.productId).toList();
+
+        return Scaffold(
+          body: isProductModel
+              ? (productModel.isNotEmpty)
+                  ? SafeArea(
+                      child: GridView.builder(
+                        padding: EdgeInsets.all(width(20)),
+                        itemCount: productModel.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 0.65,
+                        ),
+                        itemBuilder: (context, index) {
+                          final product = productModel[index]!;
+
+                          return ProductCard(
+                            imagePath: product.img1,
+                            title: product.productTitle,
+                            price: "₹ ${product.price}",
+
+                            // MAIN FIX
+                            isWishlisted: wishListIds.contains(product.id),
+
+                            onWishlistToggle: () {
+                              if (!addToWishlist) return;
+
+                              context.read<WishListBloc>().add(
+                                    AddToWishList(
+                                      banner_image: product.img1,
+                                      title: product.productTitle,
+                                      price: product.price,
+                                      productId: product.id,
+                                    ),
+                                  );
+                            },
+
+                            onCardTap: () {
+                              navigatorKey.currentState?.pushNamed(
+                                RouteNames.productDetails,
+                                arguments: {
+                                  "product_id": product.id,
+                                  "selectedButton": "S",
+                                },
                               );
-                        },
-                        onCardTap: () {
-                          navigatorKey.currentState?.pushNamed(
-                            RouteNames.productDetails,
-                            arguments: {
-                              "product_id": product.id,
-                              "selectedButton": "S",
                             },
                           );
                         },
-                      );
-                    },
+                      ),
+                    )
+                  : Center(
+                      child: MyText(title: "No result found", fontSize: 14),
+                    )
+              : Center(
+                  child: Text(
+                    errorMessage.isEmpty ? "Error" : errorMessage,
                   ),
-              )
-              : Center(child: MyText(title: "No result found", fontSize: 14))
-          : Center(
-              child: Text(errorMessage.isEmpty ? "Error" : errorMessage),
-            ),
+                ),
+        );
+      },
     );
   }
 }
