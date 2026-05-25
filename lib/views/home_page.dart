@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocListener<WishListBloc, WishListState>(
           listener: (context, state) {
+            if (ModalRoute.of(context)?.isCurrent != true) return;
             if (state.isWishListing == true) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text("Upadating the Wishlist"),
