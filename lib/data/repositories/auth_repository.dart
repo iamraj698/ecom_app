@@ -146,4 +146,29 @@ class AuthRepository {
       return e;
     }
   }
+
+  Future<String> changePassword(
+      String currentPassword, String newPassword) async {
+    try {
+      User? user = _auth.currentUser;
+
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user!.email!,
+        password: currentPassword,
+      );
+
+      // Re-authenticate
+      await user.reauthenticateWithCredential(credential);
+
+      // Update password
+      await user.updatePassword(newPassword);
+
+      print("Password updated successfully");
+      return "Success";
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      print(e.message);
+      return e.message.toString();
+    }
+  }
 }

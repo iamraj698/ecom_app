@@ -1,6 +1,8 @@
 import 'package:ecom_app/components/bottom_navigation.dart';
 import 'package:ecom_app/routes/routesName.dart';
+import 'package:ecom_app/views/account_info/account_info.dart';
 import 'package:ecom_app/views/add_address/add_address.dart';
+import 'package:ecom_app/views/auth_pages/change_password/change_password.dart';
 import 'package:ecom_app/views/auth_pages/forgot_password/forgot_password.dart';
 import 'package:ecom_app/views/auth_pages/login/login_page.dart';
 import 'package:ecom_app/views/auth_pages/login_otp/login_otp.dart';
@@ -133,6 +135,19 @@ class RouteGenerator {
           builder: (context) => ForgotPasswordPage(),
           settings: settings,
         );
+
+      case RouteNames.accountInfo:
+        return MaterialPageRoute(
+          builder: (context) => AccountInfo(),
+          settings: settings,
+        );
+
+      case RouteNames.changePassword:
+        return MaterialPageRoute(
+          builder: (context) => ChnagePassword(),
+          settings: settings,
+        );
+
       case RouteNames.newpage:
         if (settings.arguments != null) {
           final args = settings.arguments as Map<String, dynamic>;

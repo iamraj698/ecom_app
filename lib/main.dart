@@ -5,6 +5,7 @@ import 'package:ecom_app/view-models/address_bloc/address.dart';
 import 'package:ecom_app/view-models/auth_bloc/auth.dart';
 import 'package:ecom_app/view-models/cart_bloc/cart.dart';
 import 'package:ecom_app/view-models/cart_stream_bloc/cart_stream_bloc.dart';
+import 'package:ecom_app/view-models/change_pass_bloc/change_pass.dart';
 import 'package:ecom_app/view-models/demo_bloc/demo_bloc.dart';
 import 'package:ecom_app/view-models/edit_profile_block/edit_profile_bloc.dart';
 import 'package:ecom_app/view-models/fetch_all_reviews/fetch_all_review_bloc.dart';
@@ -43,6 +44,7 @@ void main() async {
     BlocProvider(create: (context) => AddressBloc()),
     BlocProvider(create: (context) => OrderBloc()),
     BlocProvider(create: (context) => SearchBloc()),
+    BlocProvider(create: (context) => ChangePassBloc()),
   ], child: const MyApp()));
 }
 
