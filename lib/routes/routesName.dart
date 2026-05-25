@@ -21,6 +21,6 @@ class RouteNames {
   static const searchResults = "searchResults";
   static const voiceSearchPage = "voiceSearchPage";
   static const forgotPassword = "forgotPassword";
-
-
+  static const accountInfo = "accountInfo";
+  static const changePassword = "changePassword";
 }

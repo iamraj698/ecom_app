@@ -101,21 +101,21 @@ class _MyDrawerState extends State<MyDrawer> {
                             ))
                   ],
                 ),
-                trailing: Container(
-                  padding: EdgeInsets.all(width(4)),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffF5F5F5),
-                      borderRadius: BorderRadius.circular(width(15))),
-                  width: width(66),
-                  height: height(32),
-                  child: const Center(
-                    child: MyText(
-                      title: "3 Orders",
-                      fontSize: 11,
-                      color: Color(0xff8F959E),
-                    ),
-                  ),
-                ),
+                // trailing: Container(
+                //   padding: EdgeInsets.all(width(4)),
+                //   decoration: BoxDecoration(
+                //       color: const Color(0xffF5F5F5),
+                //       borderRadius: BorderRadius.circular(width(15))),
+                //   width: width(66),
+                //   height: height(32),
+                //   child: const Center(
+                //     child: MyText(
+                //       title: "3 Orders",
+                //       fontSize: 11,
+                //       color: Color(0xff8F959E),
+                //     ),
+                //   ),
+                // ),
               ),
             ),
 
@@ -132,9 +132,9 @@ class _MyDrawerState extends State<MyDrawer> {
                 isSelected: [isDarkMode],
                 onPressed: (int index) {
                   setState(() {
-                    isDarkMode = !isDarkMode;
+                    // isDarkMode = !isDarkMode;
                     // toggle disabled
-                    // isDarkMode = isDarkMode;
+                    isDarkMode = isDarkMode;
                   });
                 },
                 children: [
@@ -148,6 +148,8 @@ class _MyDrawerState extends State<MyDrawer> {
             InkWell(
               onTap: () {
                 print("Account Info");
+                navigatorKey.currentState?.pop();
+                navigatorKey.currentState?.pushNamed(RouteNames.accountInfo);
               },
               child: CustomListTile(
                   icon: Icons.info_outline, title: "Account Information"),
@@ -155,21 +157,25 @@ class _MyDrawerState extends State<MyDrawer> {
             InkWell(
                 onTap: () {
                   print("Password");
+                  navigatorKey.currentState?.pop();
+                  navigatorKey.currentState?.pushNamed(RouteNames.changePassword);
                 },
                 child: CustomListTile(
                     icon: Icons.lock_outline, title: "Password")),
             InkWell(
                 onTap: () {
                   print("Order");
+                  navigatorKey.currentState?.pop();
+                  widget.onItemTapped!(2);
                 },
                 child: CustomListTile(
                     icon: Icons.shopping_bag_outlined, title: "Order")),
-            InkWell(
-                onTap: () {
-                  print("Cards");
-                },
-                child: CustomListTile(
-                    icon: Icons.wallet_outlined, title: "Cards")),
+            // InkWell(
+            //     onTap: () {
+            //       print("Cards");
+            //     },
+            //     child: CustomListTile(
+            //         icon: Icons.wallet_outlined, title: "Cards")),
             InkWell(
                 onTap: () {
                   print("Wishlist");
@@ -186,12 +192,12 @@ class _MyDrawerState extends State<MyDrawer> {
                 },
                 child:
                     CustomListTile(icon: Icons.sell, title: "Sell Products")),
-            InkWell(
-                onTap: () {
-                  print("Settings");
-                },
-                child: CustomListTile(
-                    icon: Icons.settings_outlined, title: "Settings")),
+            // InkWell(
+            //     onTap: () {
+            //       print("Settings");
+            //     },
+            //     child: CustomListTile(
+            //         icon: Icons.settings_outlined, title: "Settings")),
 
             SizedBox(
               height: height(100),

@@ -8,15 +8,19 @@ class MyText extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     required this.fontSize,
     this.color = Colors.black,
+    this.maxLines = null,
   });
   final String title;
   final FontWeight fontWeight;
   final double fontSize;
   final Color color;
+  final int? maxLines;
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: height(fontSize),
         fontWeight: fontWeight,

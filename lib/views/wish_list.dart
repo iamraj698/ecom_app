@@ -88,7 +88,9 @@ class _WishListState extends State<WishList> {
                     fontWeight: FontWeight.w600,
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        navigatorKey.currentState?.pushNamed(RouteNames.cart);
+                      },
                       icon: Image.asset(
                         "./assets/images/appbar_assets/Cart.png",
                         height: height(45),
