@@ -10,8 +10,7 @@
         android:label="MyCom"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="io.flutter.embedding.android.DisableSurfaceControl"
-            android:value="true" />
+
 
         <activity
             android:name=".MainActivity"

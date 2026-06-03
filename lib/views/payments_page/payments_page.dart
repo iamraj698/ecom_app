@@ -396,6 +396,21 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   height: height(10),
                 ),
 
+                BlocBuilder<OrderBloc, OrderState>(
+                  builder: (context, state) {
+                    if (state is OrderLoading) {
+                      return Center(
+                        child: SizedBox(
+                          width: width(30),
+                          height: height(30),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return SizedBox();
+                  },
+                )
+
                 // Column(
                 //   children: [
                 //     //

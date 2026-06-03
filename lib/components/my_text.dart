@@ -20,7 +20,8 @@ class MyText extends StatelessWidget {
     return Text(
       title,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
+      // overflow: TextOverflow.ellipsis,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         fontSize: height(fontSize),
         fontWeight: fontWeight,

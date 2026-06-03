@@ -241,21 +241,26 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                MyText(
-                                  title: product.productTitle,
-                                  fontSize: 13,
-                                  color: CustomStyles.lightGreyText,
+                            Expanded(
+                              child: SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MyText(
+                                      title: product.productTitle,
+                                      fontSize: 13,
+                                      color: CustomStyles.lightGreyText,
+                                      maxLines: 3,
+                                    ),
+                                    MyText(
+                                      title: product.subTitle,
+                                      fontSize: 22,
+                                      color: CustomStyles.textBlack,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
                                 ),
-                                MyText(
-                                  title: product.subTitle,
-                                  fontSize: 22,
-                                  color: CustomStyles.textBlack,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
+                              ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
