@@ -184,14 +184,14 @@ class _MyDrawerState extends State<MyDrawer> {
                 },
                 child: CustomListTile(
                     icon: Icons.favorite_outline, title: "Wishlist")),
-            InkWell(
-                onTap: () {
-                  // print("Sell Product");
-                  navigatorKey.currentState?.pop();
-                  navigatorKey.currentState?.pushNamed(RouteNames.sellProducts);
-                },
-                child:
-                    CustomListTile(icon: Icons.sell, title: "Sell Products")),
+            // InkWell(
+            //     onTap: () {
+            //       // print("Sell Product");
+            //       navigatorKey.currentState?.pop();
+            //       navigatorKey.currentState?.pushNamed(RouteNames.sellProducts);
+            //     },
+            //     child:
+            //         CustomListTile(icon: Icons.sell, title: "Sell Products")),
             // InkWell(
             //     onTap: () {
             //       print("Settings");
